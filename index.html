@@ -91,7 +91,7 @@
                             </div>
                         </div>
 
-                        <!-- 周六糖水卡片 -->
+                        <!-- 周六糖水卡片 (已去除限量) -->
                         <div id="cardDessert" class="p-3.5 rounded-xl border-2 border-slate-200 bg-slate-50/50 transition-all space-y-3">
                             <label class="flex items-start justify-between cursor-pointer">
                                 <div class="flex items-center space-x-3">
@@ -100,7 +100,6 @@
                                         <div id="txtDessertTitle" class="text-sm font-bold text-slate-800">🥣 周六限定糖水</div>
                                         <div class="flex items-center space-x-2 mt-0.5">
                                             <span id="txtDessertPrice" class="text-xs font-medium text-rose-600">RM --.00 / 份</span>
-                                            <span id="badgeDessertLimit" class="text-[10px] bg-rose-100 text-rose-700 font-bold px-1.5 py-0.5 rounded-full">限量</span>
                                         </div>
                                     </div>
                                 </div>
@@ -187,13 +186,12 @@
 
         let FRI_MAIN_PRICE = 13;
         let SAT_MAIN_PRICE = 15;
-        let DESSERT_PRICE = 5;    
-        let SAT_DESSERT_LIMIT = 20;
+        let DESSERT_PRICE = 5;
 
         const MY_PHONE_NUMBER = "60162207137"; 
         const DUITNOW_PHONE = "0162207137";   
         
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-t99KLkdMEcFzto_gfkosudLT3ElFVOqndO3KHZImHgx71hUqr9CDNSRg2Km45-j9Mw/exec"; 
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWeZIOF8-N8xvGwc-3c5NNH6KA88jLtEVDOISUcDYE3Ccc_AZMvO74UjJ359-bZOGDLg/exec"; 
 
         const ALL_SLIDES = [
             { image: "cafe1.jpeg", isFriday: false, isSaturdayMain: false, isDessert: false },
@@ -251,7 +249,6 @@
                     if (config.friMainPrice) FRI_MAIN_PRICE = Number(config.friMainPrice);
                     if (config.satMainPrice) SAT_MAIN_PRICE = Number(config.satMainPrice);
                     if (config.dessertPrice) DESSERT_PRICE = Number(config.dessertPrice);
-                    if (config.satDessertLimit) SAT_DESSERT_LIMIT = Number(config.satDessertLimit);
                 }
             } catch (err) {
                 console.log("无法连接后台 API，使用默认配置", err);
@@ -310,7 +307,6 @@
 
             document.getElementById('txtDessertTitle').innerText = `${SAT_DESSERT_NAME} (${satDateStr})`;
             document.getElementById('txtDessertPrice').innerText = `RM ${DESSERT_PRICE}.00 / 份`;
-            document.getElementById('badgeDessertLimit').innerText = `限量 ${SAT_DESSERT_LIMIT} 份`;
 
             document.getElementById('priceHeader').innerHTML = `主餐 RM${FRI_MAIN_PRICE}/RM${SAT_MAIN_PRICE} | 糖水 RM${DESSERT_PRICE}`;
 
@@ -352,10 +348,6 @@
             let val = parseInt(input.value) || 1;
             val += amount;
             if (val < 1) val = 1;
-            
-            if (type === 'Dessert' && val > SAT_DESSERT_LIMIT) {
-                val = SAT_DESSERT_LIMIT;
-            }
             
             input.value = val;
             calculateTotal();
