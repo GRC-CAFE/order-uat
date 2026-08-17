@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gradient-to-b from-amber-50/80 via-orange-50/30 to-amber-50/60 min-h-screen pb-24 select-none relative font-sans text-slate-800">
+<body class="bg-gradient-to-b from-amber-50/80 via-orange-50/30 to-amber-50/60 min-h-screen pb-32 select-none relative font-sans text-slate-800">
 
     <!-- Debug 状态提示条 -->
     <div id="debugBanner" class="hidden bg-red-600 text-white text-xs font-bold py-1.5 text-center shadow-md">
@@ -167,20 +167,23 @@
                     <span id="copyPhoneText">复制 DuitNow 手机号 (0162207137)</span>
                 </button>
             </div>
-
-            <p class="text-xs text-slate-400">💡 付款完成后，点击下方提交按钮跳转 WhatsApp 确认订单</p>
         </div>
-
-        <p class="text-center text-xs text-slate-400 mt-4 pb-16">提交后将自动跳转至 WhatsApp 发送订单凭证</p>
     </div>
 
-    <!-- 底部固定 WhatsApp 提交栏 -->
-    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-t border-slate-200/60 shadow-lg p-3">
-        <div class="max-w-md mx-auto">
+    <!-- 底部固定栏：仅保留橙色提醒条（带灯泡icon）和绿色 WhatsApp 按钮 -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/60 shadow-lg px-3 py-2.5">
+        <div class="max-w-md mx-auto space-y-2">
+            <!-- 橙色提醒条 (带有灯泡icon，内容已修改为精简版) -->
+            <div class="bg-amber-500 text-white text-[11px] font-bold py-1.5 px-3 rounded-lg flex items-center justify-center space-x-1.5 shadow-sm">
+                <i class="fa-regular fa-lightbulb text-xs"></i>
+                <span>请先完成付款，再点击下方按钮</span>
+            </div>
+
+            <!-- 绿色 WhatsApp 提交按钮在最下面 -->
             <button type="button" onclick="document.getElementById('orderForm').requestSubmit()" id="submitBtn" 
-                    class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 active:scale-[0.98] text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition-all">
+                    class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 active:scale-[0.98] text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition-all">
                 <i class="fa-brands fa-whatsapp text-white text-2xl"></i>
-                <span>确认提交并发送至 WhatsApp</span>
+                <span>确认已付款并发送至 WhatsApp</span>
             </button>
         </div>
     </div>
