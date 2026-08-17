@@ -196,7 +196,6 @@
         let DESSERT_PRICE = 5;    
         let SAT_DESSERT_LIMIT = 20;
 
-        // 已订数量全局变量
         let FRI_ORDERED_QTY = 0;
         let SAT_ORDERED_QTY = 0;
         let DESSERT_ORDERED_QTY = 0;
@@ -264,7 +263,6 @@
                     if (config.dessertPrice) DESSERT_PRICE = Number(config.dessertPrice);
                     if (config.satDessertLimit) SAT_DESSERT_LIMIT = Number(config.satDessertLimit);
 
-                    // 接收后端统计的数量
                     if (config.friOrderedQty !== undefined) FRI_ORDERED_QTY = Number(config.friOrderedQty);
                     if (config.satOrderedQty !== undefined) SAT_ORDERED_QTY = Number(config.satOrderedQty);
                     if (config.dessertOrderedQty !== undefined) DESSERT_ORDERED_QTY = Number(config.dessertOrderedQty);
@@ -292,7 +290,7 @@
 
         function setupMenuUI() {
             const now = new Date();
-            const currentDayOfWeek = now.getDay(); // 0 是周日, 1-6 是周一至周六
+            const currentDayOfWeek = now.getDay(); 
             
             const distToMonday = currentDayOfWeek === 0 ? -6 : 1 - currentDayOfWeek;
             
@@ -314,7 +312,6 @@
             const friDateStr = `${targetFriday.getMonth() + 1}月${targetFriday.getDate()}日`;
             const satDateStr = `${targetSaturday.getMonth() + 1}月${targetSaturday.getDate()}日`;
 
-            // 设置标题与价格
             document.getElementById('txtFriTitle').innerText = `星期五 (${friDateStr}) - ${FRI_MENU_NAME}`;
             document.getElementById('txtFriPrice').innerText = `RM ${FRI_MAIN_PRICE}.00 / 份`;
             document.getElementById('badgeFriCount').innerText = `已预订 ${FRI_ORDERED_QTY} 份`;
@@ -641,10 +638,9 @@
 
             const waUrl = `https://wa.me/${MY_PHONE_NUMBER}?text=${waMessage}`;
 
+            // 核心修改：使用 window.location.href 在当前页面无缝跳转，100% 杜绝浏览器拦截
             setTimeout(() => {
-                btn.disabled = false;
-                btn.innerHTML = originalBtnText;
-                window.open(waUrl, '_blank');
+                window.location.href = waUrl;
             }, 300);
         }
     </script>
