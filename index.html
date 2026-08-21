@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GRC CAFE - 晚餐与糖水预订</title>
+    
+    <!-- PWA 相关配置 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f59e0b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="GRC CAFE">
+    <link rel="apple-touch-icon" href="logo-192.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -170,16 +179,16 @@
         </div>
     </div>
 
-    <!-- 底部固定栏：仅保留橙色提醒条（带灯泡icon）和绿色 WhatsApp 按钮 -->
+    <!-- 底部固定栏 -->
     <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/60 shadow-lg px-3 py-2.5">
         <div class="max-w-md mx-auto space-y-2">
-            <!-- 橙色提醒条 (带有灯泡icon，内容已修改为精简版) -->
+            <!-- 橙色提醒条 -->
             <div class="bg-amber-500 text-white text-[11px] font-bold py-1.5 px-3 rounded-lg flex items-center justify-center space-x-1.5 shadow-sm">
                 <i class="fa-regular fa-lightbulb text-xs"></i>
                 <span>请先完成付款，再点击下方按钮</span>
             </div>
 
-            <!-- 绿色 WhatsApp 提交按钮在最下面 -->
+            <!-- 绿色 WhatsApp 提交按钮 -->
             <button type="button" onclick="document.getElementById('orderForm').requestSubmit()" id="submitBtn" 
                     class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 active:scale-[0.98] text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition-all">
                 <i class="fa-brands fa-whatsapp text-white text-2xl"></i>
@@ -189,6 +198,15 @@
     </div>
 
     <script>
+        // 注册 PWA Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('PWA Service Worker 注册成功:', reg))
+                    .catch(err => console.error('PWA 注册失败:', err));
+            });
+        }
+
         const DEBUG_MODE = false; 
 
         let ENABLE_FRI_DINNER = true;
@@ -332,7 +350,19 @@
             document.getElementById('txtDessertPrice').innerText = `RM ${DESSERT_PRICE}.00 / 份`;
             document.getElementById('badgeDessertCount').innerText = `已订 ${DESSERT_ORDERED_QTY} / ${SAT_DESSERT_LIMIT} 份`;
 
-            document.getElementById('priceHeader').innerHTML = `主餐 RM${FRI_MAIN_PRICE}/RM${SAT_MAIN_PRICE} | 糖水 RM${DESSERT_PRICE}`;
+            let mainPrices = [];
+            if (ENABLE_FRI_DINNER) mainPrices.push(`RM${FRI_MAIN_PRICE}`);
+            if (ENABLE_SAT_DINNER) mainPrices.push(`RM${SAT_MAIN_PRICE}`);
+
+            let priceParts = [];
+            if (mainPrices.length > 0) {
+                priceParts.push(`主餐 ${mainPrices.join('/')}`);
+            }
+            if (ENABLE_SAT_DESSERT) {
+                priceParts.push(`糖水 RM${DESSERT_PRICE}`);
+            }
+
+            document.getElementById('priceHeader').innerText = priceParts.join(' | ') || "暂无可选餐点";
 
             if (!ENABLE_FRI_DINNER) {
                 document.getElementById('cardFriday').classList.add('hidden');
