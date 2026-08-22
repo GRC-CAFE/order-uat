@@ -410,8 +410,9 @@
                 targetSaturday.setDate(targetSaturday.getDate() + 7);
             }
 
-            const friDateStr = `${targetFriday.getMonth() + 1}月${targetFriday.getDate()}日 (${targetFriday.getMonth() + 1}/${targetFriday.getDate()})`;
-            const satDateStr = `${targetSaturday.getMonth() + 1}月${targetSaturday.getDate()}日 (${targetSaturday.getMonth() + 1}/${targetSaturday.getDate()})`;
+            // 日期格式精简为 M/D，格式统一且不重复
+            const friDateStr = `${targetFriday.getMonth() + 1}/${targetFriday.getDate()}`;
+            const satDateStr = `${targetSaturday.getMonth() + 1}/${targetSaturday.getDate()}`;
 
             document.getElementById('txtFriTitle').innerText = `星期五 Fri (${friDateStr}) - ${FRI_MENU_NAME}`;
             document.getElementById('txtFriPrice').innerText = `RM ${FRI_MAIN_PRICE}.00 / 份 portion`;
