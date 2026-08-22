@@ -206,20 +206,20 @@
         </div>
     </div>
 
-    <!-- 底部固定栏 -->
-    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/60 shadow-lg px-3 py-2.5">
-        <div class="max-w-md mx-auto space-y-2">
+    <!-- 底部固定栏 (精简版) -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/60 shadow-lg px-3 py-2">
+        <div class="max-w-md mx-auto space-y-1.5">
             <!-- 橙色提醒条 -->
-            <div class="bg-amber-500 text-white text-[11px] font-bold py-1.5 px-3 rounded-lg flex items-center justify-center space-x-1.5 shadow-sm">
+            <div class="bg-amber-500 text-white text-[11px] font-bold py-1 px-3 rounded-lg flex items-center justify-center space-x-1.5 shadow-sm">
                 <i class="fa-regular fa-lightbulb text-xs"></i>
-                <span>请先完成付款，再点击下方按钮 / Pay first, then click below</span>
+                <span>请先付款再提交 / Pay before sending</span>
             </div>
 
             <!-- 绿色 WhatsApp 提交按钮 -->
             <button type="button" onclick="document.getElementById('orderForm').requestSubmit()" id="submitBtn" 
-                    class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 active:scale-[0.98] text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition-all">
-                <i class="fa-brands fa-whatsapp text-white text-2xl"></i>
-                <span>确认已付款并发送至 WhatsApp / Confirm & Send</span>
+                    class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 active:scale-[0.98] text-white font-bold py-2.5 rounded-xl shadow-md shadow-emerald-600/20 flex items-center justify-center space-x-2 transition-all">
+                <i class="fa-brands fa-whatsapp text-white text-xl"></i>
+                <span class="text-sm">确认已付款 / Confirm & Send</span>
             </button>
         </div>
     </div>
@@ -410,7 +410,6 @@
             const friDateStr = `${targetFriday.getMonth() + 1}/${targetFriday.getDate()}`;
             const satDateStr = `${targetSaturday.getMonth() + 1}/${targetSaturday.getDate()}`;
 
-            // 主食加上 Main，Dessert 移至日期括号后
             document.getElementById('txtFriTitle').innerText = `星期五 Fri (${friDateStr}) Main - ${FRI_MENU_NAME}`;
             document.getElementById('txtFriPrice').innerText = `RM ${FRI_MAIN_PRICE}.00 / 份 portion`;
             document.getElementById('badgeFriCount').innerText = `已预订 ${FRI_ORDERED_QTY} 份 (Booked: ${FRI_ORDERED_QTY})`;
