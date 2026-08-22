@@ -236,7 +236,6 @@
             });
         }
 
-        // 监听 Android / Chrome 的安装事件
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -245,7 +244,6 @@
             }
         });
 
-        // 触发 Android 原生安装弹出框
         function triggerPwaInstall() {
             if (!deferredPrompt) return;
             document.getElementById('pwaInstallBanner').classList.add('hidden');
@@ -260,7 +258,6 @@
             localStorage.setItem('pwa_prompt_dismissed', 'true');
         }
 
-        // 判断 iOS 设备并适时弹出指引
         function checkIosPrompt() {
             const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
@@ -410,19 +407,19 @@
                 targetSaturday.setDate(targetSaturday.getDate() + 7);
             }
 
-            // 日期格式精简为 M/D，格式统一且不重复
             const friDateStr = `${targetFriday.getMonth() + 1}/${targetFriday.getDate()}`;
             const satDateStr = `${targetSaturday.getMonth() + 1}/${targetSaturday.getDate()}`;
 
-            document.getElementById('txtFriTitle').innerText = `星期五 Fri (${friDateStr}) - ${FRI_MENU_NAME}`;
+            // 主食加上 Main，Dessert 移至日期括号后
+            document.getElementById('txtFriTitle').innerText = `星期五 Fri (${friDateStr}) Main - ${FRI_MENU_NAME}`;
             document.getElementById('txtFriPrice').innerText = `RM ${FRI_MAIN_PRICE}.00 / 份 portion`;
             document.getElementById('badgeFriCount').innerText = `已预订 ${FRI_ORDERED_QTY} 份 (Booked: ${FRI_ORDERED_QTY})`;
 
-            document.getElementById('txtSatTitle').innerText = `星期六 Sat (${satDateStr}) - ${SAT_MENU_NAME}`;
+            document.getElementById('txtSatTitle').innerText = `星期六 Sat (${satDateStr}) Main - ${SAT_MENU_NAME}`;
             document.getElementById('txtSatPrice').innerText = `RM ${SAT_MAIN_PRICE}.00 / 份 portion`;
             document.getElementById('badgeSatCount').innerText = `已预订 ${SAT_ORDERED_QTY} 份 (Booked: ${SAT_ORDERED_QTY})`;
 
-            document.getElementById('txtDessertTitle').innerText = `星期六 Sat Dessert (${satDateStr}) - ${SAT_DESSERT_NAME}`;
+            document.getElementById('txtDessertTitle').innerText = `星期六 Sat (${satDateStr}) Dessert - ${SAT_DESSERT_NAME}`;
             document.getElementById('txtDessertPrice').innerText = `RM ${DESSERT_PRICE}.00 / 份 portion`;
             document.getElementById('badgeDessertCount').innerText = `已订 ${DESSERT_ORDERED_QTY} / ${SAT_DESSERT_LIMIT} 份 (Booked: ${DESSERT_ORDERED_QTY}/${SAT_DESSERT_LIMIT})`;
 
