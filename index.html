@@ -204,7 +204,7 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg p-6 border border-amber-100/60 text-center space-y-4">
+        <div class="bg-white rounded-2xl shadow-lg p-5 border border-amber-100/60 text-center space-y-3">
             <div>
                 <h2 class="text-lg font-bold text-slate-800 flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-qrcode text-pink-600"></i>
@@ -217,33 +217,35 @@
                 <span class="text-[11px] text-slate-400">Scan QR code using any Banking App / TNG eWallet</span>
             </p>
             
-            <div class="relative w-56 h-56 mx-auto bg-amber-50/30 rounded-2xl border-2 border-amber-100 p-2.5 flex items-center justify-center shadow-sm">
+            <div class="relative w-48 h-48 mx-auto bg-amber-50/30 rounded-2xl border-2 border-amber-100 p-2 flex items-center justify-center shadow-sm">
                 <img src="qrcode.jpeg" class="w-full h-full object-contain rounded-xl shadow-sm" alt="DuitNow 付款码">
             </div>
 
-            <div class="bg-rose-50/80 p-3.5 rounded-xl border border-rose-100/80 shadow-sm">
-                <p class="text-xs text-rose-500 font-medium leading-relaxed">
+            <!-- 缩小后的金额展示区域 -->
+            <div class="bg-rose-50/80 px-3 py-2 rounded-xl border border-rose-100/80 shadow-sm">
+                <p class="text-[11px] text-rose-500 font-medium leading-tight">
                     扫码后请手动输入转账金额：<br>
-                    <span class="text-[11px] text-rose-400">Please enter transfer amount manually after scanning</span>
+                    <span class="text-[10px] text-rose-400">Please enter transfer amount manually after scanning</span>
                 </p>
-                <p id="qrAmountText" class="text-2xl font-black text-rose-600 mt-1">RM 0.00</p>
+                <p id="qrAmountText" class="text-xl font-black text-rose-600 mt-0.5">RM 0.00</p>
             </div>
 
-            <div class="space-y-2 pt-1">
-                <button type="button" onclick="copyAmount()" id="copyAmountBtn" class="w-full bg-amber-50 hover:bg-amber-100/80 active:scale-[0.98] text-amber-900 text-xs font-bold py-3 rounded-xl border border-amber-200/60 flex flex-col items-center justify-center transition-all">
-                    <div class="flex items-center space-x-2">
-                        <i class="fa-regular fa-copy"></i>
+            <!-- 缩小后的按钮区域 -->
+            <div class="space-y-1.5 pt-0.5">
+                <button type="button" onclick="copyAmount()" id="copyAmountBtn" class="w-full bg-amber-50 hover:bg-amber-100/80 active:scale-[0.98] text-amber-900 text-xs font-bold py-1.5 px-2 rounded-lg border border-amber-200/60 flex flex-col items-center justify-center transition-all">
+                    <div class="flex items-center space-x-1.5">
+                        <i class="fa-regular fa-copy text-xs"></i>
                         <span id="copyAmountText">复制转账金额</span>
                     </div>
-                    <span id="copyAmountSubText" class="text-[10px] font-normal text-amber-800/70 mt-0.5">Copy Amount</span>
+                    <span id="copyAmountSubText" class="text-[9px] font-normal text-amber-800/70">Copy Amount</span>
                 </button>
 
-                <button type="button" onclick="copyPhone()" id="copyPhoneBtn" class="w-full bg-amber-50 hover:bg-amber-100/80 active:scale-[0.98] text-amber-900 text-xs font-bold py-3 rounded-xl border border-amber-200/60 flex flex-col items-center justify-center transition-all">
-                    <div class="flex items-center space-x-2">
-                        <i class="fa-regular fa-copy"></i>
+                <button type="button" onclick="copyPhone()" id="copyPhoneBtn" class="w-full bg-amber-50 hover:bg-amber-100/80 active:scale-[0.98] text-amber-900 text-xs font-bold py-1.5 px-2 rounded-lg border border-amber-200/60 flex flex-col items-center justify-center transition-all">
+                    <div class="flex items-center space-x-1.5">
+                        <i class="fa-regular fa-copy text-xs"></i>
                         <span id="copyPhoneText">复制 DuitNow 手机号 (0162207137)</span>
                     </div>
-                    <span id="copyPhoneSubText" class="text-[10px] font-normal text-amber-800/70 mt-0.5">Copy Phone (0162207137)</span>
+                    <span id="copyPhoneSubText" class="text-[9px] font-normal text-amber-800/70">Copy Phone (0162207137)</span>
                 </button>
             </div>
         </div>
