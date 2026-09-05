@@ -56,9 +56,8 @@
     </div>
 
     <!-- 封面及轮播区域 -->
-    <div id="carouselContainer" class="relative w-full max-w-md mx-auto overflow-hidden rounded-b-3xl shadow-lg cursor-grab active:cursor-grabbing bg-white">
-        <img id="carouselImage" src="cafe1.jpeg" class="w-full h-auto block transition-opacity duration-500 opacity-100 pointer-events-none" alt="GRC CAFE 展示">
-        
+    <div id="carouselContainer" class="relative w-full max-w-md mx-auto overflow-hidden rounded-b-3xl shadow-lg cursor-grab active:cursor-grabbing bg-white transform-gpu">
+        <img id="carouselImage" src="cafe1.jpeg" class="w-full h-auto block transition-opacity duration-500 opacity-100 pointer-events-none will-change-[opacity]" alt="GRC CAFE 展示">
         <div id="carouselDots" class="absolute top-3 right-3 flex space-x-1.5 z-20 bg-white/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/50 shadow-sm"></div>
     </div>
 
@@ -88,11 +87,11 @@
                             <label class="block text-sm font-bold text-slate-700 leading-tight">您的名字 <span class="text-rose-500">*</span></label>
                             <span class="text-[10px] text-slate-400 font-normal">Your Name</span>
                         </div>
-                        <button type="button" onclick="openOrderQueryModal()" class="text-amber-700 hover:text-amber-900 bg-amber-50 hover:bg-amber-100 px-2.5 py-1.5 rounded-lg font-semibold flex items-center space-x-1.5 transition border border-amber-200/50 shadow-sm">
+                        <button type="button" onclick="openOrderQueryModal()" class="text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1.5 rounded-lg font-semibold flex items-center space-x-1.5 transition border border-emerald-200/50 shadow-sm">
                             <i class="fa-solid fa-search text-[10px]"></i>
                             <span class="flex flex-col text-left leading-tight">
-                                <span class="text-[11px] font-bold">查看我的订单</span>
-                                <span class="text-[9px] font-normal text-amber-800/70">My Orders</span>
+                                <span class="text-xs font-bold">查看我的订单</span>
+                                <span class="text-[10px] font-normal text-emerald-800/70">View My Orders</span>
                             </span>
                         </button>
                     </div>
@@ -108,27 +107,22 @@
                     </div>
                     
                     <div class="space-y-4">
-                        
-                        <!-- 星期五 独立模块 (动态 1~5 款) -->
+                        <!-- 星期五 独立模块 -->
                         <div id="sectionFriday" class="p-3.5 rounded-2xl border border-amber-200/70 bg-amber-50/30 space-y-3">
                             <div id="txtFriSectionHeader" class="text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1.5 rounded-xl inline-flex flex-col shadow-sm">
                                 <span>📅 星期五晚餐</span>
                                 <span class="text-[10px] font-normal text-amber-700">Friday Dinner</span>
                             </div>
-                            <div id="friDishesList" class="space-y-2.5">
-                                <!-- 由 JS 动态渲染菜色卡片 -->
-                            </div>
+                            <div id="friDishesList" class="space-y-2.5"></div>
                         </div>
 
-                        <!-- 星期六主餐 独立模块 (动态 1~5 款) -->
+                        <!-- 星期六主餐 独立模块 -->
                         <div id="sectionSaturday" class="p-3.5 rounded-2xl border border-indigo-100 bg-indigo-50/30 space-y-3">
                             <div id="headerSat" class="text-xs font-bold text-indigo-900 bg-indigo-100 px-3 py-1.5 rounded-xl inline-flex flex-col shadow-sm">
                                 <span>🗓️ 星期六晚餐</span>
                                 <span class="text-[10px] font-normal text-indigo-700">Saturday Dinner</span>
                             </div>
-                            <div id="satDishesList" class="space-y-2.5">
-                                <!-- 由 JS 动态渲染星期六多菜色卡片 -->
-                            </div>
+                            <div id="satDishesList" class="space-y-2.5"></div>
                         </div>
 
                         <!-- 周六糖水 独立模块 -->
@@ -137,38 +131,8 @@
                                 <span>🥣 星期六限定糖水</span>
                                 <span class="text-[10px] font-normal text-rose-700">Saturday Dessert</span>
                             </div>
-
-                            <div id="cardDessert" class="p-3.5 rounded-xl border-2 border-slate-200 bg-white transition-all space-y-3">
-                                <label class="flex items-start justify-between cursor-pointer">
-                                    <div class="flex items-center space-x-3">
-                                        <input type="checkbox" id="chkDessert" onchange="toggleCard('Dessert')" class="w-5 h-5 text-rose-600 rounded border-slate-300 focus:ring-rose-500 mt-0.5">
-                                        <div>
-                                            <div id="txtDessertTitle" class="text-sm font-bold text-slate-800">加载中 Loading...</div>
-                                            <div class="mt-1 space-y-0.5">
-                                                <div id="txtDessertPrice" class="text-xs font-bold text-rose-600">RM --.00 / 份</div>
-                                                <div class="text-[10px] text-rose-500/80">portion</div>
-                                                <div>
-                                                    <span id="badgeDessertCount" class="text-[10px] bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded-full inline-block mt-1">已订 0 份 (Booked 0)</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </label>
-
-                                <div id="qtyDessertBox" class="hidden flex items-center justify-between pt-2.5 border-t border-rose-100">
-                                    <div>
-                                        <span class="text-xs font-bold text-slate-600 block leading-tight">份数</span>
-                                        <span class="text-[10px] text-slate-400">Qty</span>
-                                    </div>
-                                    <div class="flex items-center space-x-3">
-                                        <button type="button" onclick="adjustQty('Dessert', -1)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-base flex items-center justify-center border border-rose-200 shadow-sm active:scale-95 transition">-</button>
-                                        <input type="number" id="qtyDessert" value="1" min="1" readonly class="w-12 text-center py-0.5 font-bold text-sm border border-slate-200 rounded-lg bg-white shadow-inner text-slate-800">
-                                        <button type="button" onclick="adjustQty('Dessert', 1)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-base flex items-center justify-center border border-rose-200 shadow-sm active:scale-95 transition">+</button>
-                                    </div>
-                                </div>
-                            </div>
+                            <div id="dessertListContainer" class="space-y-2.5"></div>
                         </div>
-
                     </div>
                 </div>
 
@@ -297,7 +261,7 @@
             <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                 <div>
                     <h3 class="text-base font-bold text-slate-800 flex items-center space-x-2">
-                        <i class="fa-solid fa-receipt text-amber-600"></i>
+                        <i class="fa-solid fa-receipt text-emerald-600"></i>
                         <span>查询我的预订记录</span>
                     </h3>
                     <p class="text-[10px] text-slate-400 font-normal mt-0.5">View My Orders</p>
@@ -314,11 +278,11 @@
                 </p>
                 <div class="flex space-x-2">
                     <input type="text" id="queryNameInput" placeholder="输入名字 (如 Tan) / Enter Name (e.g. Tan)" 
-                           class="flex-1 px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400">
+                           class="flex-1 px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400">
                     <button type="button" onclick="submitQueryOrders()" id="queryBtn"
-                            class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-2 py-2.5 rounded-xl text-xs shadow-sm transition flex flex-col items-center justify-center leading-tight">
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2 py-2.5 rounded-xl text-xs shadow-sm transition flex flex-col items-center justify-center leading-tight">
                         <span>查询</span>
-                        <span class="text-[9px] font-normal text-amber-100">Search</span>
+                        <span class="text-[9px] font-normal text-emerald-100">Search</span>
                     </button>
                 </div>
             </div>
@@ -430,6 +394,12 @@
             document.getElementById('copyPhoneText').innerText = `复制 DuitNow 手机号 (${DUITNOW_PHONE})`;
             document.getElementById('copyPhoneSubText').innerText = `Copy Phone (${DUITNOW_PHONE})`;
             
+            const imagesToPreload = ["cafe1.jpeg", "dish1.jpeg", "dish2.jpeg", "dish3.jpeg", "instruction.jpeg", "pwa.jpeg"];
+            imagesToPreload.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+
             await fetchRemoteConfig();
             updateCarouselSlides();
             setupMenuUI();
@@ -507,7 +477,6 @@
             const friDateStr = `${targetFriday.getMonth() + 1}/${targetFriday.getDate()}`;
             const satDateStr = `${targetSaturday.getMonth() + 1}/${targetSaturday.getDate()}`;
 
-            // 1. 渲染星期五多菜单（已加入 limit 显示）
             const friHeaderEl = document.getElementById('txtFriSectionHeader');
             if (FRI_DISHES.length > 1) {
                 friHeaderEl.innerHTML = `<span>📅 星期五晚餐 (${friDateStr}) - ${FRI_DISHES.length}款可选</span><span class="text-[10px] font-normal text-amber-700">Friday Dinner (${friDateStr}) - ${FRI_DISHES.length} items available</span>`;
@@ -519,39 +488,41 @@
             if (FRI_DISHES.length === 0) {
                 friListContainer.innerHTML = `<div class="text-xs text-slate-400 p-2">暂无可用菜品<br><span class="text-[10px]">No dishes available</span></div>`;
             } else {
-                friListContainer.innerHTML = FRI_DISHES.map((dish, idx) => `
-                    <div id="cardFri_${idx}" class="p-3 rounded-xl border-2 border-slate-200 bg-white transition-all space-y-3">
-                        <label class="flex items-start justify-between cursor-pointer">
-                            <div class="flex items-center space-x-3">
-                                <input type="checkbox" id="chkFri_${idx}" onchange="toggleFriDish(${idx})" class="w-5 h-5 text-amber-600 rounded border-slate-300 focus:ring-amber-500 mt-0.5">
-                                <div>
-                                    <div class="text-sm font-bold text-slate-800">${dish.name}</div>
-                                    <div class="mt-1 space-y-0.5">
-                                        <div class="text-xs font-bold text-amber-700">RM ${dish.price}.00 / 份</div>
-                                        <div class="text-[10px] text-amber-600/80">portion</div>
-                                        <div>
-                                            <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded-full inline-block mt-1">已订 ${dish.booked || 0} / ${dish.limit || 0} 份 (Booked ${dish.booked || 0}/${dish.limit || 0})</span>
+                friListContainer.innerHTML = FRI_DISHES.map((dish, idx) => {
+                    const isSoldOut = (dish.booked || 0) >= (dish.limit || 0);
+                    return `
+                        <div id="cardFri_${idx}" class="p-3 rounded-xl border-2 ${isSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200 bg-white'} transition-all space-y-3">
+                            <label class="flex items-start justify-between ${isSoldOut ? 'cursor-not-allowed' : 'cursor-pointer'}">
+                                <div class="flex items-center space-x-3">
+                                    <input type="checkbox" id="chkFri_${idx}" ${isSoldOut ? 'disabled' : 'onchange="toggleFriDish(' + idx + ')"'} class="w-5 h-5 text-amber-600 rounded border-slate-300 focus:ring-amber-500 mt-0.5">
+                                    <div>
+                                        <div class="text-sm font-bold text-slate-800">${dish.name} ${isSoldOut ? '<span class="text-rose-500 text-xs font-semibold">(已售罄 Sold Out)</span>' : ''}</div>
+                                        <div class="mt-1 flex items-center space-x-1.5">
+                                            <span class="text-xs font-bold text-amber-700">RM ${dish.price}.00</span>
+                                            <span class="text-[10px] text-amber-600/80">/ 份 (portion)</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="text-[10px] ${isSoldOut ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'} font-bold px-1.5 py-0.5 rounded-full inline-block">已订 ${dish.booked || 0} / ${dish.limit || 0} 份 (Booked ${dish.booked || 0}/${dish.limit || 0})</span>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </label>
-                        <div id="qtyFriBox_${idx}" class="hidden flex items-center justify-between pt-2 border-t border-amber-200/50">
-                            <div>
-                                <span class="text-xs font-bold text-slate-600 block leading-tight">份数</span>
-                                <span class="text-[10px] text-slate-400">Qty</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <button type="button" onclick="adjustFriQty(${idx}, -1)" class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-base flex items-center justify-center border border-amber-200 shadow-sm active:scale-95 transition">-</button>
-                                <input type="number" id="qtyFri_${idx}" value="1" min="1" readonly class="w-12 text-center py-0.5 font-bold text-sm border border-slate-200 rounded-lg bg-white shadow-inner text-slate-800">
-                                <button type="button" onclick="adjustFriQty(${idx}, 1)" class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-base flex items-center justify-center border border-amber-200 shadow-sm active:scale-95 transition">+</button>
+                            </label>
+                            <div id="qtyFriBox_${idx}" class="hidden flex items-center justify-between pt-2 border-t border-amber-200/50">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-600 block leading-tight">份数</span>
+                                    <span class="text-[10px] text-slate-400">Qty</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <button type="button" onclick="adjustFriQty(${idx}, -1)" class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-base flex items-center justify-center border border-amber-200 shadow-sm active:scale-95 transition">-</button>
+                                    <input type="number" id="qtyFri_${idx}" value="1" min="1" readonly class="w-12 text-center py-0.5 font-bold text-sm border border-slate-200 rounded-lg bg-white shadow-inner text-slate-800">
+                                    <button type="button" onclick="adjustFriQty(${idx}, 1)" class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-base flex items-center justify-center border border-amber-200 shadow-sm active:scale-95 transition">+</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
 
-            // 2. 渲染星期六多菜单（已加入 limit 显示）
             const satHeaderEl = document.getElementById('headerSat');
             if (SAT_DISHES.length > 1) {
                 satHeaderEl.innerHTML = `<span>🗓️ 星期六晚餐 (${satDateStr}) - ${SAT_DISHES.length}款可选</span><span class="text-[10px] font-normal text-indigo-700">Saturday Dinner (${satDateStr}) - ${SAT_DISHES.length} items available</span>`;
@@ -563,54 +534,91 @@
             if (SAT_DISHES.length === 0) {
                 satListContainer.innerHTML = `<div class="text-xs text-slate-400 p-2">暂无可用菜品<br><span class="text-[10px]">No dishes available</span></div>`;
             } else {
-                satListContainer.innerHTML = SAT_DISHES.map((dish, idx) => `
-                    <div id="cardSat_${idx}" class="p-3 rounded-xl border-2 border-slate-200 bg-white transition-all space-y-3">
-                        <label class="flex items-start justify-between cursor-pointer">
-                            <div class="flex items-center space-x-3">
-                                <input type="checkbox" id="chkSat_${idx}" onchange="toggleSatDish(${idx})" class="w-5 h-5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 mt-0.5">
-                                <div>
-                                    <div class="text-sm font-bold text-slate-800">${dish.name}</div>
-                                    <div class="mt-1 space-y-0.5">
-                                        <div class="text-xs font-bold text-indigo-600">RM ${dish.price}.00 / 份</div>
-                                        <div class="text-[10px] text-indigo-500/80">portion</div>
-                                        <div>
-                                            <span class="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-1.5 py-0.5 rounded-full inline-block mt-1">已订 ${dish.booked || 0} / ${dish.limit || 0} 份 (Booked ${dish.booked || 0}/${dish.limit || 0})</span>
+                satListContainer.innerHTML = SAT_DISHES.map((dish, idx) => {
+                    const isSoldOut = (dish.booked || 0) >= (dish.limit || 0);
+                    return `
+                        <div id="cardSat_${idx}" class="p-3 rounded-xl border-2 ${isSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200 bg-white'} transition-all space-y-3">
+                            <label class="flex items-start justify-between ${isSoldOut ? 'cursor-not-allowed' : 'cursor-pointer'}">
+                                <div class="flex items-center space-x-3">
+                                    <input type="checkbox" id="chkSat_${idx}" ${isSoldOut ? 'disabled' : 'onchange="toggleSatDish(' + idx + ')"'} class="w-5 h-5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 mt-0.5">
+                                    <div>
+                                        <div class="text-sm font-bold text-slate-800">${dish.name} ${isSoldOut ? '<span class="text-rose-500 text-xs font-semibold">(已售罄 Sold Out)</span>' : ''}</div>
+                                        <div class="mt-1 flex items-center space-x-1.5">
+                                            <span class="text-xs font-bold text-indigo-600">RM ${dish.price}.00</span>
+                                            <span class="text-[10px] text-indigo-500/80">/ 份 (portion)</span>
                                         </div>
+                                        <div class="mt-1">
+                                            <span class="text-[10px] ${isSoldOut ? 'bg-rose-100 text-rose-800' : 'bg-indigo-100 text-indigo-800'} font-bold px-1.5 py-0.5 rounded-full inline-block">已订 ${dish.booked || 0} / ${dish.limit || 0} 份 (Booked ${dish.booked || 0}/${dish.limit || 0})</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <div id="qtySatBox_${idx}" class="hidden flex items-center justify-between pt-2 border-t border-indigo-100">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-600 block leading-tight">份数</span>
+                                    <span class="text-[10px] text-slate-400">Qty</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <button type="button" onclick="adjustSatQty(${idx}, -1)" class="w-8 h-8 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold text-base flex items-center justify-center border border-indigo-200 shadow-sm active:scale-95 transition">-</button>
+                                    <input type="number" id="qtySat_${idx}" value="1" min="1" readonly class="w-12 text-center py-0.5 font-bold text-sm border border-slate-200 rounded-lg bg-white shadow-inner text-slate-800">
+                                    <button type="button" onclick="adjustSatQty(${idx}, 1)" class="w-8 h-8 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold text-base flex items-center justify-center border border-indigo-200 shadow-sm active:scale-95 transition">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const dessertContainer = document.getElementById('dessertListContainer');
+            if (!ENABLE_SAT_DESSERT) {
+                document.getElementById('sectionDessert').classList.add('hidden');
+            } else {
+                document.getElementById('sectionDessert').classList.remove('hidden');
+                document.getElementById('headerDessert').innerHTML = `<span>🥣 周六限定糖水 (${satDateStr})</span><span class="text-[10px] font-normal text-rose-700">Saturday Dessert (${satDateStr})</span>`;
+                
+                const isDessertSoldOut = DESSERT_ORDERED_QTY >= SAT_DESSERT_LIMIT;
+                dessertContainer.innerHTML = `
+                    <div id="cardDessert" class="p-3.5 rounded-xl border-2 ${isDessertSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200 bg-white'} transition-all space-y-3">
+                        <label class="flex items-start justify-between ${isDessertSoldOut ? 'cursor-not-allowed' : 'cursor-pointer'}">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" id="chkDessert" ${isDessertSoldOut ? 'disabled' : 'onchange="toggleCard(\'Dessert\')"'} class="w-5 h-5 text-rose-600 rounded border-slate-300 focus:ring-rose-500 mt-0.5">
+                                <div>
+                                    <div id="txtDessertTitle" class="text-sm font-bold text-slate-800">${SAT_DESSERT_NAME} ${isDessertSoldOut ? '<span class="text-rose-500 text-xs font-semibold">(已售罄 Sold Out)</span>' : ''}</div>
+                                    <div class="mt-1 flex items-center space-x-1.5">
+                                        <span id="txtDessertPrice" class="text-xs font-bold text-rose-600">RM ${DESSERT_PRICE}.00</span>
+                                        <span class="text-[10px] text-rose-500/80">/ 份 (portion)</span>
+                                    </div>
+                                    <div class="mt-1">
+                                        <span id="badgeDessertCount" class="text-[10px] ${isDessertSoldOut ? 'bg-rose-100 text-rose-800' : 'bg-rose-100 text-rose-800'} font-bold px-2 py-0.5 rounded-full inline-block">已订 ${DESSERT_ORDERED_QTY} / ${SAT_DESSERT_LIMIT} 份 (Booked ${DESSERT_ORDERED_QTY}/${SAT_DESSERT_LIMIT})</span>
                                     </div>
                                 </div>
                             </div>
                         </label>
-                        <div id="qtySatBox_${idx}" class="hidden flex items-center justify-between pt-2 border-t border-indigo-100">
+
+                        <div id="qtyDessertBox" class="hidden flex items-center justify-between pt-2.5 border-t border-rose-100">
                             <div>
                                 <span class="text-xs font-bold text-slate-600 block leading-tight">份数</span>
                                 <span class="text-[10px] text-slate-400">Qty</span>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <button type="button" onclick="adjustSatQty(${idx}, -1)" class="w-8 h-8 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold text-base flex items-center justify-center border border-indigo-200 shadow-sm active:scale-95 transition">-</button>
-                                <input type="number" id="qtySat_${idx}" value="1" min="1" readonly class="w-12 text-center py-0.5 font-bold text-sm border border-slate-200 rounded-lg bg-white shadow-inner text-slate-800">
-                                <button type="button" onclick="adjustSatQty(${idx}, 1)" class="w-8 h-8 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold text-base flex items-center justify-center border border-indigo-200 shadow-sm active:scale-95 transition">+</button>
+                                <button type="button" onclick="adjustQty('Dessert', -1)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-base flex items-center justify-center border border-rose-200 shadow-sm active:scale-95 transition">-</button>
+                                <input type="number" id="qtyDessert" value="1" min="1" readonly class="w-12 text-center py-0.5 font-bold text-sm border border-slate-200 rounded-lg bg-white shadow-inner text-slate-800">
+                                <button type="button" onclick="adjustQty('Dessert', 1)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-base flex items-center justify-center border border-rose-200 shadow-sm active:scale-95 transition">+</button>
                             </div>
                         </div>
                     </div>
-                `).join('');
+                `;
             }
-
-            // 3. 渲染周六糖水
-            document.getElementById('headerDessert').innerHTML = `<span>🥣 周六限定糖水 (${satDateStr})</span><span class="text-[10px] font-normal text-rose-700">Saturday Dessert (${satDateStr})</span>`;
-            document.getElementById('txtDessertTitle').innerText = SAT_DESSERT_NAME;
-            document.getElementById('txtDessertPrice').innerText = `RM ${DESSERT_PRICE}.00 / 份`;
-            document.getElementById('badgeDessertCount').innerText = `已订 ${DESSERT_ORDERED_QTY} / ${SAT_DESSERT_LIMIT} 份 (Booked ${DESSERT_ORDERED_QTY}/${SAT_DESSERT_LIMIT})`;
 
             let priceParts = [];
             if (ENABLE_FRI_DINNER && FRI_DISHES.length > 0) priceParts.push(`周五晚餐 Fri RM${FRI_DISHES[0].price}`);
-            if (ENABLE_SAT_DINNER && SAT_DISHES.length > 0) priceParts.push(`周六主餐 Sat RM${SAT_DISHES[0].price}`);
+            if (ENABLE_SAT_DINNER && SAT_DISHES.length > 0) priceParts.push(`周六晚餐 Sat RM${SAT_DISHES[0].price}`);
             if (ENABLE_SAT_DESSERT) priceParts.push(`糖水 Dessert RM${DESSERT_PRICE}`);
 
             document.getElementById('priceHeader').innerText = priceParts.join(' | ') || "暂无可选餐点 (No Meals Available)";
 
             if (!ENABLE_FRI_DINNER) document.getElementById('sectionFriday').classList.add('hidden');
             if (!ENABLE_SAT_DINNER) document.getElementById('sectionSaturday').classList.add('hidden');
-            if (!ENABLE_SAT_DESSERT) document.getElementById('sectionDessert').classList.add('hidden');
 
             calculateTotal();
         }
@@ -660,24 +668,52 @@
             calculateTotal();
         }
 
-        // 周五主餐数量调整（带限量校验）
         function adjustFriQty(idx, amount) {
             const input = document.getElementById(`qtyFri_${idx}`);
             let val = (parseInt(input.value) || 1) + amount;
+            
+            const dish = FRI_DISHES[idx];
+            const limit = Number(dish.limit) || 0;
+            const booked = Number(dish.booked) || 0;
+
+            if (booked >= limit) {
+                alert("⚠️ 该菜品名额已满，无法再选！");
+                input.value = 1;
+                return;
+            }
+
+            const remaining = limit - booked;
             if (val < 1) val = 1;
-            const limit = FRI_DISHES[idx].limit || 0;
-            if (limit > 0 && val > limit) val = limit;
+            if (val > remaining) {
+                val = remaining;
+                alert(`⚠️ 剩余名额不足！最多只能再预订 ${remaining} 份。`);
+            }
+
             input.value = val;
             calculateTotal();
         }
 
-        // 周六主餐数量调整（带限量校验）
         function adjustSatQty(idx, amount) {
             const input = document.getElementById(`qtySat_${idx}`);
             let val = (parseInt(input.value) || 1) + amount;
+            
+            const dish = SAT_DISHES[idx];
+            const limit = Number(dish.limit) || 0;
+            const booked = Number(dish.booked) || 0;
+
+            if (booked >= limit) {
+                alert("⚠️ 该菜品名额已满，无法再选！");
+                input.value = 1;
+                return;
+            }
+
+            const remaining = limit - booked;
             if (val < 1) val = 1;
-            const limit = SAT_DISHES[idx].limit || 0;
-            if (limit > 0 && val > limit) val = limit;
+            if (val > remaining) {
+                val = remaining;
+                alert(`⚠️ 剩余名额不足！最多只能再预订 ${remaining} 份。`);
+            }
+
             input.value = val;
             calculateTotal();
         }
@@ -685,8 +721,21 @@
         function adjustQty(type, amount) {
             const input = document.getElementById(`qty${type}`);
             let val = (parseInt(input.value) || 1) + amount;
-            if (val < 1) val = 1;
-            if (type === 'Dessert' && val > SAT_DESSERT_LIMIT) val = SAT_DESSERT_LIMIT;
+            
+            if (type === 'Dessert') {
+                if (DESSERT_ORDERED_QTY >= SAT_DESSERT_LIMIT) {
+                    alert("⚠️ 该糖水名额已满，无法再选！");
+                    input.value = 1;
+                    return;
+                }
+                const remaining = SAT_DESSERT_LIMIT - DESSERT_ORDERED_QTY;
+                if (val < 1) val = 1;
+                if (val > remaining) {
+                    val = remaining;
+                    alert(`⚠️ 剩余名额不足！最多只能再预订 ${remaining} 份。`);
+                }
+            }
+
             input.value = val;
             calculateTotal();
         }
@@ -714,7 +763,8 @@
                 });
             }
 
-            if (ENABLE_SAT_DESSERT && document.getElementById('chkDessert').checked) {
+            const chkDessert = document.getElementById('chkDessert');
+            if (ENABLE_SAT_DESSERT && chkDessert && chkDessert.checked) {
                 const qty = parseInt(document.getElementById('qtyDessert').value) || 1;
                 total += qty * DESSERT_PRICE;
             }
@@ -737,11 +787,14 @@
             carouselTimer = setInterval(() => {
                 slideIndex = (slideIndex + 1) % SLIDES.length;
                 showSlide(slideIndex);
-            }, 9000);
+            }, 10000);
         }
 
         function stopCarousel() {
-            if (carouselTimer) clearInterval(carouselTimer);
+            if (carouselTimer) {
+                clearInterval(carouselTimer);
+                carouselTimer = null;
+            }
         }
 
         function goToSlide(index) {
@@ -767,19 +820,30 @@
 
         function initSwipeEvents() {
             const container = document.getElementById('carouselContainer');
-            container.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-            container.addEventListener('touchend', (e) => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); }, { passive: true });
+            
+            container.addEventListener('touchstart', (e) => { 
+                stopCarousel(); 
+                touchStartX = e.changedTouches[0].screenX; 
+            }, { passive: true });
+            
+            container.addEventListener('touchend', (e) => { 
+                touchEndX = e.changedTouches[0].screenX; 
+                handleSwipe(); 
+                startCarousel(); 
+            }, { passive: true });
+
+            container.addEventListener('mousedown', () => { stopCarousel(); });
+            container.addEventListener('mouseup', () => { startCarousel(); });
+            container.addEventListener('mouseleave', () => { startCarousel(); });
         }
 
         function handleSwipe() {
             if (touchStartX - touchEndX > 40) {
                 slideIndex = (slideIndex + 1) % SLIDES.length;
                 showSlide(slideIndex);
-                startCarousel();
             } else if (touchEndX - touchStartX > 40) {
                 slideIndex = (slideIndex - 1 + SLIDES.length) % SLIDES.length;
                 showSlide(slideIndex);
-                startCarousel();
             }
         }
 
@@ -817,7 +881,6 @@
             });
         }
 
-        // ==================== 社交媒体分享功能 ====================
         const shareUrl = window.location.href;
         const shareTitle = "GRC CAFE - 晚餐与糖水预订";
         const shareDescription = "来看看这周的美味晚餐和糖水菜单，支持在线预订！Delicious dinner & dessert pre-order menu!";
@@ -842,9 +905,19 @@
                 window.open("https://www.messenger.com/", "_blank");
             });
         }
-        // ==========================================================
 
-        // ==================== 客户订单查询交互函数 ====================
+        function formatLocalTimestamp(isoString) {
+            if (!isoString) return '';
+            if (!isoString.includes('T') && !isoString.endsWith('Z')) {
+                return isoString;
+            }
+            const date = new Date(isoString);
+            return date.toLocaleString("zh-CN", { 
+                timeZone: "Asia/Kuala_Lumpur",
+                hour12: false 
+            }).replace(/\//g, '-');
+        }
+
         function openOrderQueryModal() {
             const currentName = document.getElementById('name').value.trim();
             if (currentName) {
@@ -880,15 +953,15 @@
                         container.innerHTML = `<div class="text-center text-xs text-slate-400 py-6 bg-slate-50 rounded-xl">没有找到关于 "${nameInput}" 的当前活动订单。<br><span class="text-[10px]">No active orders found.</span></div>`;
                     } else {
                         container.innerHTML = data.orders.map(order => `
-                            <div class="p-3 rounded-xl border border-amber-200/65 bg-amber-50/30 text-xs space-y-1 shadow-sm">
+                            <div class="p-3 rounded-xl border border-emerald-200/65 bg-emerald-50/30 text-xs space-y-1 shadow-sm">
                                 <div class="flex justify-between font-bold text-slate-800">
                                     <span>📦 ${order.category}</span>
-                                    <span class="text-amber-600 font-black">RM ${order.subtotal}</span>
+                                    <span class="text-emerald-600 font-black">RM ${order.subtotal}</span>
                                 </div>
-                                <div class="text-slate-600">明细: <span class="font-semibold">${order.detail}</span> (数量: ${order.qty})</div>
-                                <div class="flex justify-between text-[10px] text-slate-400 pt-1 border-t border-amber-100">
+                                <div class="text-slate-605">明细: <span class="font-semibold">${order.detail}</span> (数量: ${order.qty})</div>
+                                <div class="flex justify-between text-[10px] text-slate-400 pt-1 border-t border-emerald-100">
                                     <span>下单人: ${order.name}</span>
-                                    <span>${order.timestamp}</span>
+                                    <span>${formatLocalTimestamp(order.timestamp)}</span>
                                 </div>
                                 ${order.notes && order.notes !== '无 None' ? `<div class="text-[10px] text-rose-500">备注: ${order.notes}</div>` : ''}
                             </div>
@@ -902,7 +975,6 @@
                 container.innerHTML = `<div class="text-center text-xs text-rose-500 py-4">网络错误，无法连接服务器。<br><span class="text-[10px]">Network error.</span></div>`;
             }
         }
-        // ============================================================
 
         async function handleOrder(event) {
             event.preventDefault();
@@ -929,7 +1001,8 @@
                 });
             }
 
-            const dessertChecked = document.getElementById('chkDessert').checked;
+            const chkDessert = document.getElementById('chkDessert');
+            const dessertChecked = chkDessert ? chkDessert.checked : false;
 
             if (friSelectedOrders.length === 0 && satSelectedOrders.length === 0 && !dessertChecked) {
                 alert("⚠️ 请至少勾选一项餐点！ / Please select at least one item!");
@@ -938,7 +1011,7 @@
 
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-white"></i><span>正在提交订单 Submitting...</span>`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-white"></i><span>正在保存订单到云端...</span>`;
 
             const name = document.getElementById('name').value.trim();
             const notes = document.getElementById('notes').value.trim() || '无 None';
@@ -968,19 +1041,6 @@
                 payload.dessertOrder = { checked: true, detail: SAT_DESSERT_NAME, qty: q, subtotal: q * DESSERT_PRICE };
             }
 
-            if (GOOGLE_SCRIPT_URL) {
-                try {
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                } catch (e) {
-                    console.log("Sheet 请求跳过或失败 / Sheet request failed:", e);
-                }
-            }
-
             let rawMessage = `🛒 *【晚餐/糖水预订订单 Dinner & Dessert Order】*\n` +
                              `--------------------------------\n` +
                              `👤 *名字 Name*：${name}\n` +
@@ -991,12 +1051,60 @@
             rawMessage += `💰 *总计 Total*：RM ${total}\n` +
                           `📝 *备注 Remarks*：${notes}\n` +
                           `--------------------------------\n` +
-                          `已下单，已按照 RM ${total} 完成转账/准备付款，请查收！\n` +
+                          `已下单, 已按照 RM ${total} 完成转账/准备付款, 请查收!\n` +
                           `Order placed. Transferred/Ready to pay RM ${total}, please check!`;
 
-            setTimeout(() => {
-                window.location.href = `https://wa.me/${MY_PHONE_NUMBER}?text=${encodeURIComponent(rawMessage)}`;
-            }, 300);
+            if (!GOOGLE_SCRIPT_URL) {
+                alert("错误：未配置后端 API 地址。");
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-brands fa-whatsapp text-white text-xl"></i><div class="flex flex-col text-left leading-tight"><span class="text-sm font-bold">确认已付款</span><span class="text-[9px] font-normal text-emerald-100">Confirm & Send</span></div>`;
+                return;
+            }
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                const result = await response.json();
+
+                if (result && result.success) {
+                    btn.innerHTML = `<i class="fa-solid fa-check text-white"></i><span>保存成功！正在打开 WhatsApp...</span>`;
+                    
+                    // 下单成功后跳转 WhatsApp，并在切回网页时自动刷新页面获取最新库存
+                    setTimeout(() => {
+                        window.location.href = `https://wa.me/${MY_PHONE_NUMBER}?text=${encodeURIComponent(rawMessage)}`;
+                        
+                        const handleVisibilityChange = () => {
+                            if (document.visibilityState === 'visible') {
+                                document.removeEventListener('visibilitychange', handleVisibilityChange);
+                                window.location.reload();
+                            }
+                        };
+                        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000);
+
+                    }, 400);
+                } else {
+                    throw new Error(result.message || "服务器返回未知错误");
+                }
+
+            } catch (err) {
+                console.error("提交失败:", err);
+                alert(`❌ 订单提交失败，请检查库存或网络后重试！\n原因: ${err.message || '网络连接超时'}`);
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-brands fa-whatsapp text-white text-xl"></i><div class="flex flex-col text-left leading-tight"><span class="text-sm font-bold">确认已付款</span><span class="text-[9px] font-normal text-emerald-100">Confirm & Send</span></div>`;
+            }
         }
     </script>
 </body>
