@@ -16,7 +16,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gradient-to-b from-amber-50/80 via-orange-50/30 to-amber-50/60 min-h-screen pb-32 select-none relative font-sans text-slate-800">
+<body class="bg-gradient-to-b from-amber-50/80 via-orange-50/30 to-amber-50/60 min-h-screen pb-36 select-none relative font-sans text-slate-800">
 
     <!-- Toast 动态提示浮层 -->
     <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] hidden max-w-xs w-full px-4 py-3 rounded-xl shadow-xl text-xs font-bold text-center transition-all duration-300 pointer-events-none transform -translate-y-2"></div>
@@ -65,13 +65,13 @@
         <button type="button" onclick="dismissIosPrompt()" class="text-slate-400 hover:text-white text-xs px-2 py-1"><i class="fa-solid fa-xmark text-sm"></i></button>
     </div>
 
-    <!-- 封面及轮播区域 -->
-    <div id="carouselContainer" class="relative w-full max-w-md mx-auto overflow-hidden rounded-b-3xl shadow-lg cursor-grab active:cursor-grabbing bg-white transform-gpu">
-        <img id="carouselImage" src="cafe1.jpeg" class="w-full h-auto block transition-opacity duration-500 opacity-100 pointer-events-none will-change-[opacity]" alt="GRC CAFE 展示">
+    <!-- 优化后限制最大高度的响应式轮播图 -->
+    <div id="carouselContainer" class="relative w-full max-w-md mx-auto overflow-hidden rounded-b-3xl shadow-lg cursor-grab active:cursor-grabbing bg-slate-100 transform-gpu max-h-52 sm:max-h-64 flex items-center justify-center">
+        <img id="carouselImage" src="cafe1.jpeg" class="w-full h-full object-cover block transition-opacity duration-500 opacity-100 pointer-events-none will-change-[opacity]" alt="GRC CAFE 展示">
         <div id="carouselDots" class="absolute top-3 right-3 flex space-x-1.5 z-20 bg-white/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/50 shadow-sm"></div>
     </div>
 
-    <div class="max-w-md mx-auto px-2 -mt-0.5 relative z-10 space-y-5">
+    <div class="max-w-md mx-auto px-2 mt-3 relative z-10 space-y-5">
         <div class="bg-white rounded-2xl shadow-lg p-6 border border-amber-100/60 space-y-5">
             <div class="flex justify-between items-center pb-4 border-b border-slate-100">
                 <div>
@@ -243,15 +243,33 @@
         </div>
     </div>
 
-    <!-- 底部固定栏 -->
-    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/60 shadow-lg px-3 py-2">
-        <div class="max-w-md mx-auto space-y-1.5">
-            <div class="bg-amber-500 text-white text-[11px] font-bold py-1 px-3 rounded-lg flex flex-col items-center justify-center shadow-sm">
-                <div class="flex items-center space-x-1.5">
-                    <i class="fa-solid fa-receipt text-xs"></i>
-                    <span>请付款并附上凭证</span>
+    <!-- 底部固定栏与浮动已选清单卡片 -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/60 shadow-2xl px-3 py-2.5">
+        <div class="max-w-md mx-auto space-y-2">
+            <!-- 可折叠已选菜单预览卡片 -->
+            <div id="cartPreviewCard" class="hidden bg-amber-50/90 border border-amber-200 rounded-xl p-3 space-y-1.5 text-xs max-h-36 overflow-y-auto shadow-inner">
+                <div class="flex justify-between items-center text-amber-900 font-bold border-b border-amber-200/60 pb-1">
+                    <span>🛒 已选餐点清单 (Selected Items)</span>
+                    <button type="button" onclick="toggleCartPreview()" class="text-amber-700 hover:text-amber-900"><i class="fa-solid fa-chevron-down text-xs"></i></button>
                 </div>
-                <span class="text-[9px] font-normal text-amber-100">Pay & send receipt</span>
+                <div id="cartPreviewItems" class="space-y-1 text-slate-700"></div>
+            </div>
+
+            <div class="flex items-center justify-between space-x-2">
+                <!-- 已选数量点击展开小红点按钮 -->
+                <button type="button" onclick="toggleCartPreview()" id="btnCartCount" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-2 rounded-xl text-xs flex items-center space-x-1.5 border border-amber-300/60 transition active:scale-95">
+                    <i class="fa-solid fa-shopping-basket text-amber-600"></i>
+                    <span id="cartBadgeCount">已选 0 项</span>
+                    <i id="cartChevron" class="fa-solid fa-chevron-up text-[10px] text-amber-700 transition-transform"></i>
+                </button>
+
+                <div class="flex-1 bg-amber-500 text-white text-[10px] font-bold py-1.5 px-2 rounded-xl flex flex-col items-center justify-center shadow-sm">
+                    <div class="flex items-center space-x-1">
+                        <i class="fa-solid fa-receipt text-xs"></i>
+                        <span>请付款并发送凭证</span>
+                    </div>
+                    <span class="text-[9px] font-normal text-amber-100">Pay & send receipt</span>
+                </div>
             </div>
 
             <button type="button" onclick="document.getElementById('orderForm').requestSubmit()" id="submitBtn" 
@@ -259,7 +277,7 @@
                 <i class="fa-brands fa-whatsapp text-white text-xl"></i>
                 <div class="flex flex-col text-left leading-tight">
                     <span class="text-sm font-bold">确认已付款</span>
-                    <span class="text-[9px] font-normal text-emerald-100">Confirm & Send</span>
+                    <span class="text-[9px] font-normal text-emerald-100">Confirm & Send Order</span>
                 </div>
             </button>
         </div>
@@ -358,7 +376,7 @@
             localStorage.setItem('ios_pwa_dismissed_time', Date.now().toString());
         }
 
-        // --- 核心 Toast 浮态提示系统 ---
+        // --- Toast 浮态提示系统 ---
         let toastTimer = null;
         function showToast(msg, type = 'info') {
             const toast = document.getElementById('toast');
@@ -383,7 +401,7 @@
             }, 3000);
         }
 
-        // --- 本地姓名记忆逻辑 ---
+        // --- 本地姓名记忆系统 ---
         function loadSavedCustomerName() {
             const savedName = localStorage.getItem('grc_customer_name');
             if (savedName) {
@@ -548,15 +566,18 @@
                     const isLowStock = !isSoldOut && remaining <= 3;
 
                     return `
-                        <div id="cardFri_${idx}" class="p-3 rounded-xl border-2 ${isSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200 bg-white'} transition-all space-y-3">
+                        <div id="cardFri_${idx}" class="relative p-3.5 rounded-2xl border-2 ${isSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200/80 bg-white'} transition-all space-y-3 shadow-sm">
+                            <span id="badgeFriCheck_${idx}" class="hidden absolute top-3 right-3 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md flex items-center space-x-1">
+                                <i class="fa-solid fa-check text-[9px]"></i><span>已选</span>
+                            </span>
                             <label class="flex items-start justify-between ${isSoldOut ? 'cursor-not-allowed' : 'cursor-pointer'}">
                                 <div class="flex items-center space-x-3">
-                                    <input type="checkbox" id="chkFri_${idx}" ${isSoldOut ? 'disabled' : 'onchange="toggleFriDish(' + idx + ')"'} class="w-5 h-5 text-amber-600 rounded border-slate-300 focus:ring-amber-500 mt-0.5">
+                                    <input type="checkbox" id="chkFri_${idx}" ${isSoldOut ? 'disabled' : 'onchange="toggleFriDish(' + idx + ')"'} class="w-5 h-5 text-amber-600 rounded-md border-slate-300 focus:ring-amber-500 mt-0.5">
                                     <div>
-                                        <div class="text-sm font-bold text-slate-800">
+                                        <div class="text-sm font-bold text-slate-800 pr-12">
                                             ${dish.name} 
-                                            ${isSoldOut ? '<span class="text-rose-500 text-xs font-semibold">(已售罄 Sold Out)</span>' : ''}
-                                            ${isLowStock ? `<span class="text-amber-600 text-[11px] font-bold ml-1 bg-amber-100 px-1.5 py-0.5 rounded-md">🔥 仅剩 ${remaining} 份</span>` : ''}
+                                            ${isSoldOut ? '<span class="text-rose-500 text-xs font-semibold block sm:inline">(已售罄 Sold Out)</span>' : ''}
+                                            ${isLowStock ? `<span class="text-amber-700 text-[10px] font-bold ml-1 bg-amber-100 px-1.5 py-0.5 rounded-md">🔥 仅剩 ${remaining} 份</span>` : ''}
                                         </div>
                                         <div class="mt-1 flex items-center space-x-1.5">
                                             <span class="text-xs font-bold text-amber-700">RM ${dish.price}.00</span>
@@ -568,15 +589,14 @@
                                     </div>
                                 </div>
                             </label>
-                            <div id="qtyFriBox_${idx}" class="hidden flex items-center justify-between pt-2 border-t border-amber-200/50">
+                            <div id="qtyFriBox_${idx}" class="hidden flex items-center justify-between pt-2.5 border-t border-amber-200/60">
                                 <div>
-                                    <span class="text-xs font-bold text-slate-600 block leading-tight">份数</span>
-                                    <span class="text-[10px] text-slate-400">Qty</span>
+                                    <span class="text-xs font-bold text-slate-600 block leading-tight">数量 / Qty</span>
                                 </div>
                                 <div class="flex items-center space-x-3">
-                                    <button type="button" id="btnFriMinus_${idx}" onclick="adjustFriQty(${idx}, -1)" class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-base flex items-center justify-center border border-amber-200 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">-</button>
+                                    <button type="button" id="btnFriMinus_${idx}" onclick="adjustFriQty(${idx}, -1)" class="w-8 h-8 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-base flex items-center justify-center border border-amber-300/60 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">-</button>
                                     <input type="number" id="qtyFri_${idx}" value="1" min="1" readonly class="w-12 text-center py-0.5 font-bold text-sm border border-slate-200 rounded-lg bg-white shadow-inner text-slate-800">
-                                    <button type="button" id="btnFriPlus_${idx}" onclick="adjustFriQty(${idx}, 1)" class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-base flex items-center justify-center border border-amber-200 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">+</button>
+                                    <button type="button" id="btnFriPlus_${idx}" onclick="adjustFriQty(${idx}, 1)" class="w-8 h-8 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-base flex items-center justify-center border border-amber-300/60 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">+</button>
                                 </div>
                             </div>
                         </div>
@@ -603,15 +623,18 @@
                     const isLowStock = !isSoldOut && remaining <= 3;
 
                     return `
-                        <div id="cardSat_${idx}" class="p-3 rounded-xl border-2 ${isSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200 bg-white'} transition-all space-y-3">
+                        <div id="cardSat_${idx}" class="relative p-3.5 rounded-2xl border-2 ${isSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200/80 bg-white'} transition-all space-y-3 shadow-sm">
+                            <span id="badgeSatCheck_${idx}" class="hidden absolute top-3 right-3 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md flex items-center space-x-1">
+                                <i class="fa-solid fa-check text-[9px]"></i><span>已选</span>
+                            </span>
                             <label class="flex items-start justify-between ${isSoldOut ? 'cursor-not-allowed' : 'cursor-pointer'}">
                                 <div class="flex items-center space-x-3">
-                                    <input type="checkbox" id="chkSat_${idx}" ${isSoldOut ? 'disabled' : 'onchange="toggleSatDish(' + idx + ')"'} class="w-5 h-5 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 mt-0.5">
+                                    <input type="checkbox" id="chkSat_${idx}" ${isSoldOut ? 'disabled' : 'onchange="toggleSatDish(' + idx + ')"'} class="w-5 h-5 text-indigo-600 rounded-md border-slate-300 focus:ring-indigo-500 mt-0.5">
                                     <div>
-                                        <div class="text-sm font-bold text-slate-800">
+                                        <div class="text-sm font-bold text-slate-800 pr-12">
                                             ${dish.name} 
-                                            ${isSoldOut ? '<span class="text-rose-500 text-xs font-semibold">(已售罄 Sold Out)</span>' : ''}
-                                            ${isLowStock ? `<span class="text-indigo-600 text-[11px] font-bold ml-1 bg-indigo-100 px-1.5 py-0.5 rounded-md">🔥 仅剩 ${remaining} 份</span>` : ''}
+                                            ${isSoldOut ? '<span class="text-rose-500 text-xs font-semibold block sm:inline">(已售罄 Sold Out)</span>' : ''}
+                                            ${isLowStock ? `<span class="text-indigo-700 text-[10px] font-bold ml-1 bg-indigo-100 px-1.5 py-0.5 rounded-md">🔥 仅剩 ${remaining} 份</span>` : ''}
                                         </div>
                                         <div class="mt-1 flex items-center space-x-1.5">
                                             <span class="text-xs font-bold text-indigo-600">RM ${dish.price}.00</span>
@@ -623,15 +646,14 @@
                                     </div>
                                 </div>
                             </label>
-                            <div id="qtySatBox_${idx}" class="hidden flex items-center justify-between pt-2 border-t border-indigo-100">
+                            <div id="qtySatBox_${idx}" class="hidden flex items-center justify-between pt-2.5 border-t border-indigo-100">
                                 <div>
-                                    <span class="text-xs font-bold text-slate-600 block leading-tight">份数</span>
-                                    <span class="text-[10px] text-slate-400">Qty</span>
+                                    <span class="text-xs font-bold text-slate-600 block leading-tight">数量 / Qty</span>
                                 </div>
                                 <div class="flex items-center space-x-3">
-                                    <button type="button" id="btnSatMinus_${idx}" onclick="adjustSatQty(${idx}, -1)" class="w-8 h-8 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold text-base flex items-center justify-center border border-indigo-200 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">-</button>
+                                    <button type="button" id="btnSatMinus_${idx}" onclick="adjustSatQty(${idx}, -1)" class="w-8 h-8 rounded-lg bg-indigo-100 hover:bg-indigo-200 text-indigo-900 font-bold text-base flex items-center justify-center border border-indigo-300/60 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">-</button>
                                     <input type="number" id="qtySat_${idx}" value="1" min="1" readonly class="w-12 text-center py-0.5 font-bold text-sm border border-slate-200 rounded-lg bg-white shadow-inner text-slate-800">
-                                    <button type="button" id="btnSatPlus_${idx}" onclick="adjustSatQty(${idx}, 1)" class="w-8 h-8 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 font-bold text-base flex items-center justify-center border border-indigo-200 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">+</button>
+                                    <button type="button" id="btnSatPlus_${idx}" onclick="adjustSatQty(${idx}, 1)" class="w-8 h-8 rounded-lg bg-indigo-100 hover:bg-indigo-200 text-indigo-900 font-bold text-base flex items-center justify-center border border-indigo-300/60 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">+</button>
                                 </div>
                             </div>
                         </div>
@@ -651,15 +673,18 @@
                 const isDessertLowStock = !isDessertSoldOut && dessertRemaining <= 3;
 
                 dessertContainer.innerHTML = `
-                    <div id="cardDessert" class="p-3.5 rounded-xl border-2 ${isDessertSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200 bg-white'} transition-all space-y-3">
+                    <div id="cardDessert" class="relative p-3.5 rounded-2xl border-2 ${isDessertSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200/80 bg-white'} transition-all space-y-3 shadow-sm">
+                        <span id="badgeDessertCheck" class="hidden absolute top-3 right-3 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md flex items-center space-x-1">
+                            <i class="fa-solid fa-check text-[9px]"></i><span>已选</span>
+                        </span>
                         <label class="flex items-start justify-between ${isDessertSoldOut ? 'cursor-not-allowed' : 'cursor-pointer'}">
                             <div class="flex items-center space-x-3">
-                                <input type="checkbox" id="chkDessert" ${isDessertSoldOut ? 'disabled' : 'onchange="toggleCard(\'Dessert\')"'} class="w-5 h-5 text-rose-600 rounded border-slate-300 focus:ring-rose-500 mt-0.5">
+                                <input type="checkbox" id="chkDessert" ${isDessertSoldOut ? 'disabled' : 'onchange="toggleCard(\'Dessert\')"'} class="w-5 h-5 text-rose-600 rounded-md border-slate-300 focus:ring-rose-500 mt-0.5">
                                 <div>
-                                    <div id="txtDessertTitle" class="text-sm font-bold text-slate-800">
+                                    <div id="txtDessertTitle" class="text-sm font-bold text-slate-800 pr-12">
                                         ${SAT_DESSERT_NAME} 
-                                        ${isDessertSoldOut ? '<span class="text-rose-500 text-xs font-semibold">(已售罄 Sold Out)</span>' : ''}
-                                        ${isDessertLowStock ? `<span class="text-rose-600 text-[11px] font-bold ml-1 bg-rose-100 px-1.5 py-0.5 rounded-md">🔥 仅剩 ${dessertRemaining} 份</span>` : ''}
+                                        ${isDessertSoldOut ? '<span class="text-rose-500 text-xs font-semibold block sm:inline">(已售罄 Sold Out)</span>' : ''}
+                                        ${isDessertLowStock ? `<span class="text-rose-600 text-[10px] font-bold ml-1 bg-rose-100 px-1.5 py-0.5 rounded-md">🔥 仅剩 ${dessertRemaining} 份</span>` : ''}
                                     </div>
                                     <div class="mt-1 flex items-center space-x-1.5">
                                         <span id="txtDessertPrice" class="text-xs font-bold text-rose-600">RM ${DESSERT_PRICE}.00</span>
@@ -674,13 +699,12 @@
 
                         <div id="qtyDessertBox" class="hidden flex items-center justify-between pt-2.5 border-t border-rose-100">
                             <div>
-                                <span class="text-xs font-bold text-slate-600 block leading-tight">份数</span>
-                                <span class="text-[10px] text-slate-400">Qty</span>
+                                <span class="text-xs font-bold text-slate-600 block leading-tight">数量 / Qty</span>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <button type="button" id="btnDessertMinus" onclick="adjustQty('Dessert', -1)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-base flex items-center justify-center border border-rose-200 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">-</button>
+                                <button type="button" id="btnDessertMinus" onclick="adjustQty('Dessert', -1)" class="w-8 h-8 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-900 font-bold text-base flex items-center justify-center border border-rose-300/60 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">-</button>
                                 <input type="number" id="qtyDessert" value="1" min="1" readonly class="w-12 text-center py-0.5 font-bold text-sm border border-slate-200 rounded-lg bg-white shadow-inner text-slate-800">
-                                <button type="button" id="btnDessertPlus" onclick="adjustQty('Dessert', 1)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-base flex items-center justify-center border border-rose-200 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">+</button>
+                                <button type="button" id="btnDessertPlus" onclick="adjustQty('Dessert', 1)" class="w-8 h-8 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-900 font-bold text-base flex items-center justify-center border border-rose-300/60 shadow-sm active:scale-95 transition disabled:opacity-40 disabled:cursor-not-allowed">+</button>
                             </div>
                         </div>
                     </div>
@@ -700,18 +724,22 @@
             calculateTotal();
         }
 
+        // --- 选中卡片样式强化与角标切换 ---
         function toggleFriDish(idx) {
             const chk = document.getElementById(`chkFri_${idx}`);
             const card = document.getElementById(`cardFri_${idx}`);
             const qtyBox = document.getElementById(`qtyFriBox_${idx}`);
+            const badge = document.getElementById(`badgeFriCheck_${idx}`);
 
             if (chk.checked) {
-                card.className = "p-3 rounded-xl border-2 border-amber-500 bg-amber-50/70 shadow-sm transition-all space-y-3";
+                card.className = "relative p-3.5 rounded-2xl border-2 border-amber-500 bg-amber-50/90 shadow-md transition-all space-y-3";
                 qtyBox.classList.remove('hidden');
+                if (badge) badge.classList.remove('hidden');
                 updateFriButtonStates(idx);
             } else {
-                card.className = "p-3 rounded-xl border-2 border-slate-200 bg-white transition-all space-y-3";
+                card.className = "relative p-3.5 rounded-2xl border-2 border-slate-200/80 bg-white transition-all space-y-3 shadow-sm";
                 qtyBox.classList.add('hidden');
+                if (badge) badge.classList.add('hidden');
             }
             calculateTotal();
         }
@@ -720,14 +748,17 @@
             const chk = document.getElementById(`chkSat_${idx}`);
             const card = document.getElementById(`cardSat_${idx}`);
             const qtyBox = document.getElementById(`qtySatBox_${idx}`);
+            const badge = document.getElementById(`badgeSatCheck_${idx}`);
 
             if (chk.checked) {
-                card.className = "p-3 rounded-xl border-2 border-indigo-500 bg-indigo-50/70 shadow-sm transition-all space-y-3";
+                card.className = "relative p-3.5 rounded-2xl border-2 border-indigo-500 bg-indigo-50/90 shadow-md transition-all space-y-3";
                 qtyBox.classList.remove('hidden');
+                if (badge) badge.classList.remove('hidden');
                 updateSatButtonStates(idx);
             } else {
-                card.className = "p-3 rounded-xl border-2 border-slate-200 bg-white transition-all space-y-3";
+                card.className = "relative p-3.5 rounded-2xl border-2 border-slate-200/80 bg-white transition-all space-y-3 shadow-sm";
                 qtyBox.classList.add('hidden');
+                if (badge) badge.classList.add('hidden');
             }
             calculateTotal();
         }
@@ -736,14 +767,17 @@
             const chk = document.getElementById(`chk${type}`);
             const card = document.getElementById(`card${type}`);
             const qtyBox = document.getElementById(`qty${type}Box`);
+            const badge = document.getElementById(`badge${type}Check`);
 
             if (chk.checked) {
-                card.className = `p-3.5 rounded-xl border-2 border-rose-500 bg-rose-50/70 shadow-sm transition-all space-y-3`;
+                card.className = `relative p-3.5 rounded-2xl border-2 border-rose-500 bg-rose-50/90 shadow-md transition-all space-y-3`;
                 qtyBox.classList.remove('hidden');
+                if (badge) badge.classList.remove('hidden');
                 updateDessertButtonStates();
             } else {
-                card.className = "p-3.5 rounded-xl border-2 border-slate-200 bg-white transition-all space-y-3";
+                card.className = "relative p-3.5 rounded-2xl border-2 border-slate-200/80 bg-white transition-all space-y-3 shadow-sm";
                 qtyBox.classList.add('hidden');
+                if (badge) badge.classList.add('hidden');
             }
             calculateTotal();
         }
@@ -874,8 +908,11 @@
             calculateTotal();
         }
 
+        // --- 计算总额与生成底部可折叠菜单预览 ---
         function calculateTotal() {
             let total = 0;
+            let totalItemsCount = 0;
+            let cartPreviewHtml = "";
 
             if (ENABLE_FRI_DINNER) {
                 FRI_DISHES.forEach((dish, idx) => {
@@ -883,6 +920,8 @@
                     if (chk && chk.checked) {
                         const qty = parseInt(document.getElementById(`qtyFri_${idx}`).value) || 1;
                         total += qty * dish.price;
+                        totalItemsCount += qty;
+                        cartPreviewHtml += `<div class="flex justify-between items-center"><span>[周五 Fri] ${dish.name} x ${qty}</span><span class="font-bold">RM ${qty * dish.price}</span></div>`;
                     }
                 });
             }
@@ -893,6 +932,8 @@
                     if (chk && chk.checked) {
                         const qty = parseInt(document.getElementById(`qtySat_${idx}`).value) || 1;
                         total += qty * dish.price;
+                        totalItemsCount += qty;
+                        cartPreviewHtml += `<div class="flex justify-between items-center"><span>[周六 Sat] ${dish.name} x ${qty}</span><span class="font-bold">RM ${qty * dish.price}</span></div>`;
                     }
                 });
             }
@@ -901,12 +942,36 @@
             if (ENABLE_SAT_DESSERT && chkDessert && chkDessert.checked) {
                 const qty = parseInt(document.getElementById('qtyDessert').value) || 1;
                 total += qty * DESSERT_PRICE;
+                totalItemsCount += qty;
+                cartPreviewHtml += `<div class="flex justify-between items-center"><span>[糖水 Dessert] ${SAT_DESSERT_NAME} x ${qty}</span><span class="font-bold">RM ${qty * DESSERT_PRICE}</span></div>`;
             }
 
             currentTotal = total.toFixed(2);
             document.getElementById('totalText').innerText = `RM ${currentTotal}`;
             document.getElementById('qrAmountText').innerText = `RM ${currentTotal}`;
             document.getElementById('copyAmountText').innerText = `复制转账金额 (${currentTotal})`;
+
+            // 更新底部小红点与浮动预览卡片内容
+            document.getElementById('cartBadgeCount').innerText = `已选 ${totalItemsCount} 项`;
+            const previewItemsContainer = document.getElementById('cartPreviewItems');
+            if (cartPreviewHtml) {
+                previewItemsContainer.innerHTML = cartPreviewHtml;
+            } else {
+                previewItemsContainer.innerHTML = `<div class="text-slate-400 text-center py-1">暂未选择任何餐点</div>`;
+            }
+        }
+
+        // 切换展开/折叠已选菜单预览卡片
+        function toggleCartPreview() {
+            const card = document.getElementById('cartPreviewCard');
+            const chevron = document.getElementById('cartChevron');
+            if (card.classList.contains('hidden')) {
+                card.classList.remove('hidden');
+                if (chevron) chevron.style.transform = 'rotate(180deg)';
+            } else {
+                card.classList.add('hidden');
+                if (chevron) chevron.style.transform = 'rotate(0deg)';
+            }
         }
 
         function renderDots() {
@@ -1071,6 +1136,7 @@
             document.getElementById('queryModal').classList.add('hidden');
         }
 
+        // --- 订单查询系统（增强：状态标签与一键复制摘要） ---
         async function submitQueryOrders() {
             const nameInput = document.getElementById('queryNameInput').value.trim();
             const container = document.getElementById('queryResultsContainer');
@@ -1090,20 +1156,30 @@
                     if (data.orders.length === 0) {
                         container.innerHTML = `<div class="text-center text-xs text-slate-400 py-6 bg-slate-50 rounded-xl">没有找到关于 "${nameInput}" 的当前活动订单。<br><span class="text-[10px]">No active orders found.</span></div>`;
                     } else {
-                        container.innerHTML = data.orders.map(order => `
-                            <div class="p-3 rounded-xl border border-emerald-200/65 bg-emerald-50/30 text-xs space-y-1 shadow-sm">
-                                <div class="flex justify-between font-bold text-slate-800">
-                                    <span>📦 ${order.category}</span>
-                                    <span class="text-emerald-600 font-black">RM ${order.subtotal}</span>
+                        container.innerHTML = data.orders.map((order, idx) => {
+                            const summaryText = `【GRC CAFE 订单凭证】\n姓名: ${order.name}\n分类: ${order.category}\n餐点: ${order.detail} x ${order.qty}\n金额: RM ${order.subtotal}\n时间: ${formatLocalTimestamp(order.timestamp)}`;
+                            
+                            return `
+                                <div class="p-3.5 rounded-xl border border-emerald-200/80 bg-emerald-50/40 text-xs space-y-2 shadow-sm relative">
+                                    <div class="flex justify-between items-center font-bold text-slate-800">
+                                        <span class="flex items-center space-x-1.5">
+                                            <span>📦 ${order.category}</span>
+                                            <span class="bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.5 rounded-md">已预订 Active</span>
+                                        </span>
+                                        <span class="text-emerald-700 font-black text-sm">RM ${order.subtotal}</span>
+                                    </div>
+                                    <div class="text-slate-600">明细: <span class="font-semibold text-slate-800">${order.detail}</span> (数量: ${order.qty})</div>
+                                    ${order.notes && order.notes !== '无 None' ? `<div class="text-[10px] text-rose-500 font-medium">备注: ${order.notes}</div>` : ''}
+                                    <div class="flex justify-between items-center text-[10px] text-slate-400 pt-2 border-t border-emerald-100">
+                                        <span>下单时间: ${formatLocalTimestamp(order.timestamp)}</span>
+                                        <button type="button" onclick="copyOrderSummary('${encodeURIComponent(summaryText)}')" class="bg-white hover:bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded-lg border border-emerald-200 shadow-sm transition active:scale-95 flex items-center space-x-1">
+                                            <i class="fa-regular fa-copy"></i>
+                                            <span>复制摘要</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="text-slate-605">明细: <span class="font-semibold">${order.detail}</span> (数量: ${order.qty})</div>
-                                <div class="flex justify-between text-[10px] text-slate-400 pt-1 border-t border-emerald-100">
-                                    <span>下单人: ${order.name}</span>
-                                    <span>${formatLocalTimestamp(order.timestamp)}</span>
-                                </div>
-                                ${order.notes && order.notes !== '无 None' ? `<div class="text-[10px] text-rose-500">备注: ${order.notes}</div>` : ''}
-                            </div>
-                        `).join('');
+                            `;
+                        }).join('');
                     }
                 } else {
                     container.innerHTML = `<div class="text-center text-xs text-rose-500 py-4">查询失败: ${data.message || '未知错误'}</div>`;
@@ -1112,6 +1188,13 @@
                 console.error(err);
                 container.innerHTML = `<div class="text-center text-xs text-rose-500 py-4">网络错误，无法连接服务器。<br><span class="text-[10px]">Network error.</span></div>`;
             }
+        }
+
+        function copyOrderSummary(encodedStr) {
+            const summary = decodeURIComponent(encodedStr);
+            safeCopyText(summary, () => {
+                showToast("✅ 订单摘要已复制到剪贴板！", "success");
+            });
         }
 
         async function handleOrder(event) {
@@ -1156,7 +1239,7 @@
             if (overlay) overlay.classList.remove('hidden');
 
             const name = document.getElementById('name').value.trim();
-            saveCustomerName(name); // 保存名字到本地缓存
+            saveCustomerName(name);
 
             const notes = document.getElementById('notes').value.trim() || '无 None';
             const total = currentTotal;
