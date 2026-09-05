@@ -65,9 +65,9 @@
         <button type="button" onclick="dismissIosPrompt()" class="text-slate-400 hover:text-white text-xs px-2 py-1"><i class="fa-solid fa-xmark text-sm"></i></button>
     </div>
 
-    <!-- 完整显示不裁切的响应式轮播图 -->
-    <div id="carouselContainer" class="relative w-full max-w-md mx-auto overflow-hidden rounded-b-3xl shadow-lg cursor-grab active:cursor-grabbing bg-slate-900 transform-gpu flex items-center justify-center aspect-[16/9]">
-        <img id="carouselImage" src="cafe1.jpeg" class="w-full h-full object-contain block transition-opacity duration-500 opacity-100 pointer-events-none will-change-[opacity]" alt="GRC CAFE 展示">
+    <!-- 响应式轮播图（无 aspect-[16/9] 且还原 object-cover） -->
+    <div id="carouselContainer" class="relative w-full max-w-md mx-auto overflow-hidden rounded-b-3xl shadow-lg cursor-grab active:cursor-grabbing bg-slate-900 transform-gpu flex items-center justify-center">
+        <img id="carouselImage" src="cafe1.jpeg" class="w-full h-full object-cover block transition-opacity duration-500 opacity-100 pointer-events-none will-change-[opacity]" alt="GRC CAFE 展示">
         <div id="carouselDots" class="absolute top-3 right-3 flex space-x-1.5 z-20 bg-white/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/50 shadow-sm"></div>
     </div>
 
