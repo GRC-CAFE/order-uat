@@ -71,7 +71,7 @@
         <button type="button" onclick="dismissIosPrompt()" class="text-slate-400 hover:text-white text-xs px-2 py-1"><i class="fa-solid fa-xmark text-sm"></i></button>
     </div>
 
-      <!-- 封面及轮播区域 -->
+    <!-- 封面及轮播区域 -->
     <div id="carouselContainer" class="relative w-full max-w-md mx-auto overflow-hidden rounded-b-3xl shadow-lg cursor-grab active:cursor-grabbing bg-white transform-gpu">
         <img id="carouselImage" src="cafe1.jpeg" class="w-full h-auto block transition-opacity duration-500 opacity-100 pointer-events-none will-change-[opacity]" alt="GRC CAFE 展示">
         <div id="carouselDots" class="absolute top-3 right-3 flex space-x-1.5 z-20 bg-white/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/50 shadow-sm"></div>
@@ -221,7 +221,6 @@
                 <img src="qrcode.jpeg" class="w-full h-full object-contain rounded-xl shadow-sm" alt="DuitNow 付款码">
             </div>
 
-            <!-- 缩小后的金额展示区域 -->
             <div class="bg-rose-50/80 px-3 py-2 rounded-xl border border-rose-100/80 shadow-sm">
                 <p class="text-[11px] text-rose-500 font-medium leading-tight">
                     扫码后请手动输入转账金额：<br>
@@ -230,7 +229,6 @@
                 <p id="qrAmountText" class="text-xl font-black text-rose-600 mt-0.5">RM 0.00</p>
             </div>
 
-            <!-- 缩小后的按钮区域 -->
             <div class="space-y-1.5 pt-0.5">
                 <button type="button" onclick="copyAmount()" id="copyAmountBtn" class="w-full bg-amber-50 hover:bg-amber-100/80 active:scale-[0.98] text-amber-900 text-xs font-bold py-1.5 px-2 rounded-lg border border-amber-200/60 flex flex-col items-center justify-center transition-all">
                     <div class="flex items-center space-x-1.5">
@@ -264,7 +262,6 @@
             </div>
 
             <div class="flex items-center justify-between space-x-2">
-                <!-- 已选数量点击展开小红点按钮 -->
                 <button type="button" onclick="toggleCartPreview()" id="btnCartCount" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-2 rounded-xl text-xs flex items-center space-x-1.5 border border-amber-300/60 transition active:scale-95">
                     <i class="fa-solid fa-shopping-basket text-amber-600"></i>
                     <span id="cartBadgeCount">已选 0 项 / Selected 0</span>
@@ -440,15 +437,6 @@
         
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWeZIOF8-N8xvGwc-3c5NNH6KA88jLtEVDOISUcDYE3Ccc_AZMvO74UjJ359-bZOGDLg/exec"; 
 
-        const ALL_SLIDES = [
-            { image: "cafe1.jpeg", isFriday: false, isSaturdayMain: false, isDessert: false, isInstruction: false },
-            { image: "dish1.jpeg", isFriday: true,  isSaturdayMain: false, isDessert: false, isInstruction: false },
-            { image: "dish2.jpeg", isFriday: false, isSaturdayMain: true,  isDessert: false, isInstruction: false },
-            { image: "dish3.jpeg", isFriday: false, isSaturdayMain: false, isDessert: true,  isInstruction: false },
-            { image: "instruction.jpeg", isFriday: false, isSaturdayMain: false, isDessert: false, isInstruction: true },
-            { image: "pwa.jpeg", isFriday: false, isSaturdayMain: false, isDessert: false, isInstruction: false }
-        ];
-
         let SLIDES = [];
         let currentTotal = "0.00";
         let slideIndex = 0;
@@ -472,8 +460,9 @@
             document.getElementById('copyPhoneText').innerText = `复制 DuitNow 手机号 (${DUITNOW_PHONE})`;
             document.getElementById('copyPhoneSubText').innerText = `Copy Phone (${DUITNOW_PHONE})`;
             
-            const imagesToPreload = ["cafe1.jpeg", "dish1.jpeg", "dish2.jpeg", "dish3.jpeg", "instruction.jpeg", "pwa.jpeg"];
-            imagesToPreload.forEach(src => {
+            // 基础固定图片预加载
+            const baseImages = ["cafe1.jpeg", "instruction.jpeg", "pwa.jpeg"];
+            baseImages.forEach(src => {
                 const img = new Image();
                 img.src = src;
             });
@@ -492,19 +481,19 @@
                 const res = await fetch(GOOGLE_SCRIPT_URL);
                 const config = await res.json();
                 if (config && !config.error) {
-                    ENABLE_FRI_DINNER = parseBool(config.ENABLE_FRI_DINNER);
-                    ENABLE_SAT_DINNER = parseBool(config.ENABLE_SAT_DINNER);
-                    ENABLE_SAT_DESSERT = parseBool(config.ENABLE_SAT_DESSERT);
+                    if (config.ENABLE_FRI_DINNER !== undefined) ENABLE_FRI_DINNER = parseBool(config.ENABLE_FRI_DINNER);
+                    if (config.ENABLE_SAT_DINNER !== undefined) ENABLE_SAT_DINNER = parseBool(config.ENABLE_SAT_DINNER);
+                    if (config.ENABLE_SAT_DESSERT !== undefined) ENABLE_SAT_DESSERT = parseBool(config.ENABLE_SAT_DESSERT);
                     
                     if (config.friDishes && Array.isArray(config.friDishes)) {
-                        FRI_DISHES = config.friDishes;
+                        FRI_DISHES = config.friDishes.map(d => ({ ...d, price: Number(d.price) || 0 }));
                     }
                     if (config.satDishes && Array.isArray(config.satDishes)) {
-                        SAT_DISHES = config.satDishes;
+                        SAT_DISHES = config.satDishes.map(d => ({ ...d, price: Number(d.price) || 0 }));
                     }
 
                     if (config.satDessertName) SAT_DESSERT_NAME = config.satDessertName;
-                    if (config.dessertPrice) DESSERT_PRICE = Number(config.dessertPrice);
+                    if (config.dessertPrice !== undefined) DESSERT_PRICE = Number(config.dessertPrice) || 0;
                     if (config.satDessertLimit) SAT_DESSERT_LIMIT = Number(config.satDessertLimit);
                     if (config.dessertOrderedQty !== undefined) DESSERT_ORDERED_QTY = Number(config.dessertOrderedQty);
                 }
@@ -513,21 +502,55 @@
             }
         }
 
+        // --- 动态生成轮播图列表 ---
         function updateCarouselSlides() {
-            SLIDES = ALL_SLIDES.filter(slide => {
-                const imgName = slide.image.toLowerCase();
-                if (slide.isInstruction || imgName.includes('pwa')) {
-                    return true;
-                }
-                if (slide.isFriday && !ENABLE_FRI_DINNER) return false;
-                if (slide.isSaturdayMain && !ENABLE_SAT_DINNER) return false;
-                if (slide.isDessert && !ENABLE_SAT_DESSERT) return false;
-                return true;
-            });
+            let dynamicSlides = [
+                { image: "cafe1.jpeg" } // 第一张固定为首页宣传图
+            ];
+
+            // 1. 周五菜品动态照片：fri_dish1.jpeg ~ fri_dish5.jpeg
+            if (ENABLE_FRI_DINNER && FRI_DISHES && FRI_DISHES.length > 0) {
+                FRI_DISHES.forEach((dish, idx) => {
+                    dynamicSlides.push({
+                        image: `fri_dish${idx + 1}.jpeg`,
+                        title: dish.name
+                    });
+                });
+            }
+
+            // 2. 周六菜品动态照片：sat_dish1.jpeg ~ sat_dish5.jpeg
+            if (ENABLE_SAT_DINNER && SAT_DISHES && SAT_DISHES.length > 0) {
+                SAT_DISHES.forEach((dish, idx) => {
+                    dynamicSlides.push({
+                        image: `sat_dish${idx + 1}.jpeg`,
+                        title: dish.name
+                    });
+                });
+            }
+
+            // 3. 周六糖水/甜品照片：sat_dessert.jpeg
+            if (ENABLE_SAT_DESSERT) {
+                dynamicSlides.push({
+                    image: "sat_dessert.jpeg",
+                    title: SAT_DESSERT_NAME
+                });
+            }
+
+            // 4. 追加尾部说明照片
+            dynamicSlides.push({ image: "instruction.jpeg" });
+            dynamicSlides.push({ image: "pwa.jpeg" });
+
+            SLIDES = dynamicSlides;
 
             if (SLIDES.length === 0) {
-                SLIDES = [{ image: "cafe1.jpeg", isFriday: false, isSaturdayMain: false, isDessert: false, isInstruction: false }];
+                SLIDES = [{ image: "cafe1.jpeg" }];
             }
+
+            // 预加载新生成的图片
+            SLIDES.forEach(s => {
+                const img = new Image();
+                img.src = s.image;
+            });
 
             renderDots();
             showSlide(0);
@@ -572,6 +595,7 @@
                     const isSoldOut = booked >= limit;
                     const remaining = Math.max(0, limit - booked);
                     const isLowStock = !isSoldOut && remaining <= 3;
+                    const priceVal = Number(dish.price) || 0;
 
                     return `
                         <div id="cardFri_${idx}" class="relative p-3.5 rounded-2xl border-2 ${isSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200/80 bg-white'} transition-all space-y-3 shadow-sm">
@@ -588,7 +612,7 @@
                                             ${isLowStock ? `<span class="text-amber-700 text-[10px] font-bold ml-1 bg-amber-100 px-1.5 py-0.5 rounded-md">🔥 仅剩 ${remaining} 份 (${remaining} left)</span>` : ''}
                                         </div>
                                         <div class="mt-1 flex items-center space-x-1.5">
-                                            <span class="text-xs font-bold text-amber-700">RM ${dish.price}.00</span>
+                                            <span class="text-xs font-bold text-amber-700">RM ${priceVal.toFixed(2)}</span>
                                             <span class="text-[10px] text-amber-600/80">/ 份 (portion)</span>
                                         </div>
                                         <div class="mt-1">
@@ -629,6 +653,7 @@
                     const isSoldOut = booked >= limit;
                     const remaining = Math.max(0, limit - booked);
                     const isLowStock = !isSoldOut && remaining <= 3;
+                    const priceVal = Number(dish.price) || 0;
 
                     return `
                         <div id="cardSat_${idx}" class="relative p-3.5 rounded-2xl border-2 ${isSoldOut ? 'border-slate-300 bg-slate-100 opacity-75' : 'border-slate-200/80 bg-white'} transition-all space-y-3 shadow-sm">
@@ -645,7 +670,7 @@
                                             ${isLowStock ? `<span class="text-indigo-700 text-[10px] font-bold ml-1 bg-indigo-100 px-1.5 py-0.5 rounded-md">🔥 仅剩 ${remaining} 份 (${remaining} left)</span>` : ''}
                                         </div>
                                         <div class="mt-1 flex items-center space-x-1.5">
-                                            <span class="text-xs font-bold text-indigo-600">RM ${dish.price}.00</span>
+                                            <span class="text-xs font-bold text-indigo-600">RM ${priceVal.toFixed(2)}</span>
                                             <span class="text-[10px] text-indigo-500/80">/ 份 (portion)</span>
                                         </div>
                                         <div class="mt-1">
@@ -695,7 +720,7 @@
                                         ${isDessertLowStock ? `<span class="text-rose-600 text-[10px] font-bold ml-1 bg-rose-100 px-1.5 py-0.5 rounded-md">🔥 仅剩 ${dessertRemaining} 份 (${dessertRemaining} left)</span>` : ''}
                                     </div>
                                     <div class="mt-1 flex items-center space-x-1.5">
-                                        <span id="txtDessertPrice" class="text-xs font-bold text-rose-600">RM ${DESSERT_PRICE}.00</span>
+                                        <span id="txtDessertPrice" class="text-xs font-bold text-rose-600">RM ${Number(DESSERT_PRICE).toFixed(2)}</span>
                                         <span class="text-[10px] text-rose-500/80">/ 份 (portion)</span>
                                     </div>
                                     <div class="mt-1">
@@ -720,9 +745,9 @@
             }
 
             let priceParts = [];
-            if (ENABLE_FRI_DINNER && FRI_DISHES.length > 0) priceParts.push(`周五晚餐 Fri RM${FRI_DISHES[0].price}`);
-            if (ENABLE_SAT_DINNER && SAT_DISHES.length > 0) priceParts.push(`周六晚餐 Sat RM${SAT_DISHES[0].price}`);
-            if (ENABLE_SAT_DESSERT) priceParts.push(`糖水 Dessert RM${DESSERT_PRICE}`);
+            if (ENABLE_FRI_DINNER && FRI_DISHES.length > 0) priceParts.push(`周五晚餐 Fri RM${Number(FRI_DISHES[0].price).toFixed(2)}`);
+            if (ENABLE_SAT_DINNER && SAT_DISHES.length > 0) priceParts.push(`周六晚餐 Sat RM${Number(SAT_DISHES[0].price).toFixed(2)}`);
+            if (ENABLE_SAT_DESSERT) priceParts.push(`糖水 Dessert RM${Number(DESSERT_PRICE).toFixed(2)}`);
 
             document.getElementById('priceHeader').innerText = priceParts.join(' | ') || "暂无可选餐点 (No Meals Available)";
 
@@ -927,9 +952,11 @@
                     const chk = document.getElementById(`chkFri_${idx}`);
                     if (chk && chk.checked) {
                         const qty = parseInt(document.getElementById(`qtyFri_${idx}`).value) || 1;
-                        total += qty * dish.price;
+                        const price = Number(dish.price) || 0;
+                        const sub = qty * price;
+                        total += sub;
                         totalItemsCount += qty;
-                        cartPreviewHtml += `<div class="flex justify-between items-center"><span>[周五 Fri] ${dish.name} x ${qty}</span><span class="font-bold">RM ${qty * dish.price}</span></div>`;
+                        cartPreviewHtml += `<div class="flex justify-between items-center"><span>[周五 Fri] ${dish.name} x ${qty}</span><span class="font-bold">RM ${sub.toFixed(2)}</span></div>`;
                     }
                 });
             }
@@ -939,9 +966,11 @@
                     const chk = document.getElementById(`chkSat_${idx}`);
                     if (chk && chk.checked) {
                         const qty = parseInt(document.getElementById(`qtySat_${idx}`).value) || 1;
-                        total += qty * dish.price;
+                        const price = Number(dish.price) || 0;
+                        const sub = qty * price;
+                        total += sub;
                         totalItemsCount += qty;
-                        cartPreviewHtml += `<div class="flex justify-between items-center"><span>[周六 Sat] ${dish.name} x ${qty}</span><span class="font-bold">RM ${qty * dish.price}</span></div>`;
+                        cartPreviewHtml += `<div class="flex justify-between items-center"><span>[周六 Sat] ${dish.name} x ${qty}</span><span class="font-bold">RM ${sub.toFixed(2)}</span></div>`;
                     }
                 });
             }
@@ -949,9 +978,11 @@
             const chkDessert = document.getElementById('chkDessert');
             if (ENABLE_SAT_DESSERT && chkDessert && chkDessert.checked) {
                 const qty = parseInt(document.getElementById('qtyDessert').value) || 1;
-                total += qty * DESSERT_PRICE;
+                const price = Number(DESSERT_PRICE) || 0;
+                const sub = qty * price;
+                total += sub;
                 totalItemsCount += qty;
-                cartPreviewHtml += `<div class="flex justify-between items-center"><span>[糖水 Dessert] ${SAT_DESSERT_NAME} x ${qty}</span><span class="font-bold">RM ${qty * DESSERT_PRICE}</span></div>`;
+                cartPreviewHtml += `<div class="flex justify-between items-center"><span>[糖水 Dessert] ${SAT_DESSERT_NAME} x ${qty}</span><span class="font-bold">RM ${sub.toFixed(2)}</span></div>`;
             }
 
             currentTotal = total.toFixed(2);
@@ -1144,7 +1175,7 @@
             document.getElementById('queryModal').classList.add('hidden');
         }
 
-        // --- 订单查询系统（增强：状态标签与一键复制摘要） ---
+        // --- 订单查询系统 ---
         async function submitQueryOrders() {
             const nameInput = document.getElementById('queryNameInput').value.trim();
             const container = document.getElementById('queryResultsContainer');
@@ -1165,7 +1196,8 @@
                         container.innerHTML = `<div class="text-center text-xs text-slate-400 py-6 bg-slate-50 rounded-xl">没有找到关于 "${nameInput}" 的当前活动订单。<br><span class="text-[10px]">No active orders found for "${nameInput}".</span></div>`;
                     } else {
                         container.innerHTML = data.orders.map((order, idx) => {
-                            const summaryText = `【GRC CAFE 订单凭证 / Order Receipt】\n姓名 Name: ${order.name}\n分类 Category: ${order.category}\n餐点 Item: ${order.detail} x ${order.qty}\n金额 Amount: RM ${order.subtotal}\n时间 Time: ${formatLocalTimestamp(order.timestamp)}`;
+                            const subTotalVal = Number(order.subtotal) || 0;
+                            const summaryText = `【GRC CAFE 订单凭证 / Order Receipt】\n姓名 Name: ${order.name}\n分类 Category: ${order.category}\n餐点 Item: ${order.detail} x ${order.qty}\n金额 Amount: RM ${subTotalVal.toFixed(2)}\n时间 Time: ${formatLocalTimestamp(order.timestamp)}`;
                             
                             return `
                                 <div class="p-3.5 rounded-xl border border-emerald-200/80 bg-emerald-50/40 text-xs space-y-2 shadow-sm relative">
@@ -1174,7 +1206,7 @@
                                             <span>📦 ${order.category}</span>
                                             <span class="bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.5 rounded-md">已预订 Active</span>
                                         </span>
-                                        <span class="text-emerald-700 font-black text-sm">RM ${order.subtotal}</span>
+                                        <span class="text-emerald-700 font-black text-sm">RM ${subTotalVal.toFixed(2)}</span>
                                     </div>
                                     <div class="text-slate-600">明细 Details: <span class="font-semibold text-slate-800">${order.detail}</span> (数量/Qty: ${order.qty})</div>
                                     ${order.notes && order.notes !== '无 None' ? `<div class="text-[10px] text-rose-500 font-medium">备注 Remarks: ${order.notes}</div>` : ''}
@@ -1214,7 +1246,8 @@
                     const chk = document.getElementById(`chkFri_${idx}`);
                     if (chk && chk.checked) {
                         const q = parseInt(document.getElementById(`qtyFri_${idx}`).value) || 1;
-                        friSelectedOrders.push({ name: dish.name, qty: q, subtotal: q * dish.price });
+                        const price = Number(dish.price) || 0;
+                        friSelectedOrders.push({ name: dish.name, qty: q, subtotal: q * price });
                     }
                 });
             }
@@ -1225,7 +1258,8 @@
                     const chk = document.getElementById(`chkSat_${idx}`);
                     if (chk && chk.checked) {
                         const q = parseInt(document.getElementById(`qtySat_${idx}`).value) || 1;
-                        satSelectedOrders.push({ name: dish.name, qty: q, subtotal: q * dish.price });
+                        const price = Number(dish.price) || 0;
+                        satSelectedOrders.push({ name: dish.name, qty: q, subtotal: q * price });
                     }
                 });
             }
@@ -1242,7 +1276,6 @@
             const overlay = document.getElementById('loadingOverlay');
             const loadingText = document.getElementById('loadingText');
 
-            // 激活提交防重与全屏遮罩
             btn.disabled = true;
             if (overlay) overlay.classList.remove('hidden');
 
@@ -1272,8 +1305,9 @@
 
             if (dessertChecked && ENABLE_SAT_DESSERT) {
                 const q = parseInt(document.getElementById('qtyDessert').value) || 1;
+                const dPrice = Number(DESSERT_PRICE) || 0;
                 selectedItems.push(`星期六 Dessert: ${SAT_DESSERT_NAME} x ${q}份/portion(s)`);
-                payload.dessertOrder = { checked: true, detail: SAT_DESSERT_NAME, qty: q, subtotal: q * DESSERT_PRICE };
+                payload.dessertOrder = { checked: true, detail: SAT_DESSERT_NAME, qty: q, subtotal: q * dPrice };
             }
 
             let rawMessage = `🛒 *【晚餐/糖水预订订单 Dinner & Dessert Order】*\n` +
